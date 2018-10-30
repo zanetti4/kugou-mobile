@@ -9,6 +9,7 @@ react16.6.0: 构建项目，属于底层框架。
 react-dom: 这个软件包提供了针对DOM的方法。
 antd-mobile: 一个基于 Preact / React / React Native 的 UI 组件库。
 react-router-dom: 声明的 React 路由。
+Axios: http请求模块。
 ```
 
 ## 路由设计及功能
@@ -24,6 +25,14 @@ react-router-dom: 声明的 React 路由。
 - 点击歌曲列表的歌曲，显示底部播放层进行播放，点击播放层，可以显示播放器。如果不想听歌了，还可以将播放层隐藏。还能下载。歌曲列表有无限加载功能。
 - 在4个顶部导航对应的一级路由页面，可以点击顶部导航进行选项卡切换。
 - 在二级路由页面和搜索页，顶部导航变为类别名或歌手名，还有后退按钮。只有歌手类别和搜索是白底色，其余为透明。
+
+## 心得体会&技术难点
+1. 本地图片在页面中不显示。  
+**解决办法：**  
+用 *require* 的方式引入图片。
+```javascript
+<img alt="logo" src={require("../../assets/images/top-logo.png")} />
+```
 
 ## 安装
 
