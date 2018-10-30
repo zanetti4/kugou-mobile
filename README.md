@@ -9,6 +9,7 @@ react16.6.0: 构建项目，属于底层框架。
 react-dom: 这个软件包提供了针对DOM的方法。
 antd-mobile: 一个基于 Preact / React / React Native 的 UI 组件库。
 react-router-dom: 声明的 React 路由。
+Axios: http请求模块。
 ```
 
 ## 路由设计及功能
