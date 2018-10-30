@@ -1,0 +1,8 @@
+.head {
+    position: fixed;
+    z-index: 100;
+    box-shadow: 0 .05rem .05rem rgba(0, 0, 0, .1);
+    width: 100vw;
+}
+.head .top {background-color: #2CA2F9;}
+.head .am-tabs-default-bar-tab {font-size: 0.37rem;}

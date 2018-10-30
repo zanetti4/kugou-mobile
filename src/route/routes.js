@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import config from './config';
-import {Route} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 
 class Routes extends Component {
     render() {
@@ -10,7 +10,10 @@ class Routes extends Component {
 
         return ( 
             <React.Fragment>
-                {routes}
+                <Switch>
+                    {routes}
+                    <Redirect to="/" />
+                </Switch>
             </React.Fragment>
         );
     }

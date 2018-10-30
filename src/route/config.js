@@ -1,5 +1,6 @@
 import Routes from './routes';
 import NewSong from '../views/new-song/new-song';
+import Rank from '../views/rank/rank';
 
 export let topNav = [
     {
@@ -11,6 +12,7 @@ export let topNav = [
     {
         path: '/rank',
         title: '排行',
+        component: Rank,
         info: {order: 1}
     },
     {

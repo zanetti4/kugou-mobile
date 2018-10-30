@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd-mobile": "^2.2.6",
+    "axios": "^0.18.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",
@@ -27,5 +28,14 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0"
+  },
+  "proxy": {
+    "/kugou": {
+      "target": "http://m.kugou.com/",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/kugou": ""
+      }
+    }
   }
 }
