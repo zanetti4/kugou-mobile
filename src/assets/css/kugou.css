@@ -1,0 +1,13 @@
+/* 假设设计稿为750px宽 */
+html {font-size: 13.3333vw;}
+body {background-color: white;}
+
+/* 通用样式 */
+.block-pic {
+    display: block;
+    max-width: 100%;
+}
+
+/* 页面主体 */
+.app-main {padding-top: 1.9rem;}
+.load {text-align: center;}
