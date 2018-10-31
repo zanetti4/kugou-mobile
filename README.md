@@ -11,6 +11,7 @@ antd-mobile: 一个基于 Preact / React / React Native 的 UI 组件库。
 react-router-dom: 声明的 React 路由。
 Axios: http请求模块。
 http-proxy-middleware: node.js 设置代理的中间件。
+prop-types: 对 props 进行验证。
 ```
 
 ## 路由设计及功能
