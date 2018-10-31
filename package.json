@@ -5,8 +5,11 @@
   "dependencies": {
     "antd-mobile": "^2.2.6",
     "axios": "^0.18.0",
+<<<<<<< HEAD
     "http-proxy-middleware": "^0.19.0",
     "prop-types": "^15.6.2",
+=======
+>>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",
@@ -30,5 +33,17 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0"
+<<<<<<< HEAD
+=======
+  },
+  "proxy": {
+    "/kugou": {
+      "target": "http://m.kugou.com/",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/kugou": ""
+      }
+    }
+>>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
   }
 }

@@ -10,6 +10,11 @@ react-dom: 这个软件包提供了针对DOM的方法。
 antd-mobile: 一个基于 Preact / React / React Native 的 UI 组件库。
 react-router-dom: 声明的 React 路由。
 Axios: http请求模块。
+<<<<<<< HEAD
+=======
+http-proxy-middleware: node.js 设置代理的中间件。
+prop-types: 对 props 进行验证。
+>>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
 ```
 
 ## 路由设计及功能
@@ -33,6 +38,12 @@ Axios: http请求模块。
 ```javascript
 <img alt="logo" src={require("../../assets/images/top-logo.png")} />
 ```
+<<<<<<< HEAD
+=======
+2. 为了解决跨域问题，在 *package.json* 设置代理时，*proxy* 不能是对象。  
+**解决办法：**  
+设置代理不写在 *package.json*，先安装模块 *http-proxy-middleware*，在 *src* 同级目录新建文件 *setupProxy.js*，代理写在这里。
+>>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
 
 ## 安装
 

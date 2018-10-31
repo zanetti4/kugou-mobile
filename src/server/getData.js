@@ -38,6 +38,7 @@ export let getData = function(serverName, params = {}){
             }
 
             render(){
+<<<<<<< HEAD
                 let loading = <div className="load">
                     <Icon type="loading" />
                 </div>;
@@ -48,6 +49,12 @@ export let getData = function(serverName, params = {}){
                     //将 this.props 扩展到组件上，为了让组件可以使用 match, history, location
                     : <Component data={this.state.data} {...this.props} /> */
                     loading
+=======
+                return(
+                    this.state.isLoading 
+                    ? <Icon type="loading" />
+                    : <Component data={this.state.data} {...this.props} />
+>>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
                 )
             }
         };
