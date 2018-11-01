@@ -40,6 +40,12 @@ react-redux: 将 react 绑定到 redux。
 2. 为了解决跨域问题，在 *package.json* 设置代理时，*proxy* 不能是对象。  
 **解决办法：**  
 设置代理不写在 *package.json*，先安装模块 *http-proxy-middleware*，在 *src* 同级目录新建文件 *setupProxy.js*，代理写在这里。
+3. 非组件的 js 文件如何使用 redux 中的数据？  
+**解决办法：**  
+可以把 store export 出来，让其它模块可以直接引用。
+```javascript
+export let store = createStore(reducers, data);
+```
 
 ## 安装
 
