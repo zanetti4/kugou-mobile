@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Carousel from './carousel';
 import {getData} from '../../server/getData';
 
 class NewSong extends Component {
@@ -6,7 +7,7 @@ class NewSong extends Component {
         console.log(this.props.data);
 
         return ( 
-            <h1>新歌</h1>
+            <Carousel bannerData={this.props.data.banner} />
         );
     }
 }

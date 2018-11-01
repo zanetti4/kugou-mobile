@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon } from 'antd-mobile';
 import servers from './api';
+import {store} from '../index';
 
 export let getData = function(serverName, params = {}){
     return function(Component){
@@ -12,6 +13,8 @@ export let getData = function(serverName, params = {}){
                     data: {},
                     isLoading: true
                 };
+
+                this.loadWrap = React.createRef();
             }
 
             componentDidMount(){
@@ -35,26 +38,26 @@ export let getData = function(serverName, params = {}){
                         isLoading: false
                     });
                 });
+
+                //使 loading 垂直居中
+                store.subscribe(() => {
+                    let state = store.getState();
+                    let loadPt = (document.documentElement.clientHeight - state.mainPt - 36)/2;
+
+                    this.loadWrap.current.style.paddingTop = `${loadPt}px`;
+                });
             }
 
             render(){
-<<<<<<< HEAD
-                let loading = <div className="load">
-                    <Icon type="loading" />
+                let loading = <div className="load" ref={this.loadWrap}>
+                    <Icon type="loading" size="lg" />
                 </div>;
 
                 return(
-                    /* this.state.isLoading 
-                    ? <Icon type="loading" />
-                    //将 this.props 扩展到组件上，为了让组件可以使用 match, history, location
-                    : <Component data={this.state.data} {...this.props} /> */
-                    loading
-=======
-                return(
                     this.state.isLoading 
-                    ? <Icon type="loading" />
+                    ? loading
+                    //将 this.props 扩展到组件上，为了让组件可以使用 match, history, location
                     : <Component data={this.state.data} {...this.props} />
->>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
                 )
             }
         };

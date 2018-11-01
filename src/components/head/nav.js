@@ -21,10 +21,7 @@ class Nav extends Component {
             <Tabs 
                 tabs={topNav}
                 initialPage={initPage}
-<<<<<<< HEAD
                 page={initPage}
-=======
->>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
                 onChange={tab => {
                     this.props.history.push(tab.path);
                 }}
