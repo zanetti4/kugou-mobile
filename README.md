@@ -10,11 +10,10 @@ react-dom: 这个软件包提供了针对DOM的方法。
 antd-mobile: 一个基于 Preact / React / React Native 的 UI 组件库。
 react-router-dom: 声明的 React 路由。
 Axios: http请求模块。
-<<<<<<< HEAD
-=======
 http-proxy-middleware: node.js 设置代理的中间件。
 prop-types: 对 props 进行验证。
->>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
+redux: JavaScript 状态容器，提供可预测化的状态管理。
+react-redux: 将 react 绑定到 redux。
 ```
 
 ## 路由设计及功能
@@ -38,12 +37,15 @@ prop-types: 对 props 进行验证。
 ```javascript
 <img alt="logo" src={require("../../assets/images/top-logo.png")} />
 ```
-<<<<<<< HEAD
-=======
 2. 为了解决跨域问题，在 *package.json* 设置代理时，*proxy* 不能是对象。  
 **解决办法：**  
 设置代理不写在 *package.json*，先安装模块 *http-proxy-middleware*，在 *src* 同级目录新建文件 *setupProxy.js*，代理写在这里。
->>>>>>> 50f0af9cbe90e2788a4cd48a3f4c99093ca67b62
+3. 非组件的 js 文件如何使用 redux 中的数据？  
+**解决办法：**  
+可以把 store export 出来，让其它模块可以直接引用。
+```javascript
+export let store = createStore(reducers, data);
+```
 
 ## 安装
 
