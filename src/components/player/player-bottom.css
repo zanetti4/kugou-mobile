@@ -1,0 +1,25 @@
+.playerb {
+    position: fixed;
+    z-index: 90;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, .9);
+    padding: .1rem 0 .1rem .1rem;
+}
+.playerb .am-flexbox .playerb-2 {flex: 2 1;}
+.playerb-center {
+    color: #888;
+    font-size: .2rem;
+}
+.playerb-center div {
+    color: white;
+    font-size: .25rem;
+    line-height: 1.8;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.playerb-right {color: white;}
+.playerb-right i {margin-right: .5rem;}
+.playerb-right i:last-child {margin-right: 0;}

@@ -3,6 +3,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Routes from './route/routes';
 import Head from './components/head/head';
+import PlayerBottom from './components/player/player-bottom';
 import {getStyle} from './assets/js/myFn';
 import 'antd-mobile/dist/antd-mobile.css';
 import './assets/css/kugou.css';
@@ -31,6 +32,7 @@ class App extends Component {
                     <div className="content app-main" ref={this.main}>
                         <Routes />
                     </div>
+                    <PlayerBottom />
                 </React.Fragment>
             </Router>
         );

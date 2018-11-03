@@ -1,4 +1,8 @@
 .carousel-link {
     display: inline-block;
+    /* display: block; */
+    /* height: auto; */
 }
-.carousel-link img {max-width: 100%;}
+.carousel-link img {
+    max-width: 100%;
+}
