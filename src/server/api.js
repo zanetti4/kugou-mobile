@@ -43,6 +43,8 @@ let instance = axios.create({
     }
 });
 
+let requestMp3 = axios.create({baseURL: baseUrl});
+
 let request = (path) => {
     return instance(path).catch(error => {
         if (error.response) {
@@ -89,11 +91,24 @@ export const getSingerInfo = (params = { singerid: '' }) => {
     return request(`/singer/info/${params.singerid}?json=true`);
 };
 
+//获取歌曲详细信息
+export const getSongInfo = (hash = '') => {
+    return requestMp3('/app/i/getSongInfo.php', {
+        responseType: 'json',
+        params: {
+            cmd: 'playInfo',
+            hash,
+            from: 'mkugou'
+        }
+    });
+};
+
 export default {
     getNewSongData,
     getRankList,
     getPlist,
     getSingers,
     getSingerList,
-    getSingerInfo
+    getSingerInfo,
+    getSongInfo
 };

@@ -40,11 +40,12 @@ export let getData = function(serverName, params = {}){
                 });
 
                 //使 loading 垂直居中
-                store.subscribe(() => {
+                let unsub = store.subscribe(() => {
                     let state = store.getState();
                     let loadPt = (document.documentElement.clientHeight - state.mainPt - 36)/2;
 
                     this.loadWrap.current.style.paddingTop = `${loadPt}px`;
+                    unsub();
                 });
             }
 

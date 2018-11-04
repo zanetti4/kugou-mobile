@@ -25,6 +25,8 @@ class App extends Component {
     }
 
     render() {
+        let {isPlay} = this.props;
+
         return ( 
             <Router>
                 <React.Fragment>
@@ -32,11 +34,18 @@ class App extends Component {
                     <div className="content app-main" ref={this.main}>
                         <Routes />
                     </div>
-                    <PlayerBottom />
+                    {isPlay ? <PlayerBottom /> : null}
                 </React.Fragment>
             </Router>
         );
     }
 }
 
-export default connect()(App);
+//从 redux 获取是否需要播放歌曲
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay
+    };
+};
+
+export default connect(mapStateToProps)(App);

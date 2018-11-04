@@ -53,3 +53,4 @@ html:not([data-scale]) .songsl-list .am-list-body::before {background-color: tra
     color: #333;
     line-height: 3;
 }
+.songsl-lpb {padding-bottom: 1.8rem;}

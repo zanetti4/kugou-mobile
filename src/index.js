@@ -6,7 +6,13 @@ import App from './App';
 import reducers from './reducers/reducers';
 import * as serviceWorker from './serviceWorker';
 
-let data = {mainPt: 0};
+let data = {
+    mainPt: 0,
+    isPlay: false,
+    hash: '',
+    songList: []
+};
+
 export let store = createStore(reducers, data);
 
 ReactDOM.render( 

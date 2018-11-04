@@ -7,6 +7,15 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'play':
+            return {
+                ...state,
+                isPlay: action.isPlay,
+                hash: action.hash,
+                songList: action.songList
+            };
+
+            break;
         default:
             return state;
     }

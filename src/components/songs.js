@@ -6,25 +6,24 @@ class Songs extends Component {
     constructor(props){
         super(props);
 
-        const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
+        console.log(this.props.list);
+
+        /* const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
 
         const dataSource = new ListView.DataSource({
             getRowData,
             // getSectionHeaderData: getSectionData,
             rowHasChanged: (row1, row2) => row1 !== row2
             // sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-        });
+        }); */
 
         this.state = {
-            dataSource
+            dataSource: this.props.list
         };
     }
 
     render() {
-        let {list} = this.props;
-
-        console.log(list);
-        
+        let {list} = this.props;        
         let index = list.length - 1;
 
         const row = (rowData, sectionID, rowID) => {
