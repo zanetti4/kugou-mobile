@@ -29,7 +29,7 @@ classnames: 有条件地添加类名。
 - Search: 搜索页，默认展示“最近热门”关键词，点击即可对其进行搜索。也可以输入歌曲名搜索，展示结果数和歌曲列表。
 - 点击歌曲列表的歌曲，显示底部播放层进行播放，点击播放层，可以显示播放器。歌曲列表有无限加载功能。
 - 在4个顶部导航对应的一级路由页面，可以点击顶部导航进行选项卡切换。
-- 在二级路由页面和搜索页，顶部导航变为类别名或歌手名，还有后退按钮。只有歌手类别和搜索是白底色，其余为透明。
+- 在二级路由页面和搜索页，顶部导航变为类别名或歌手名，还有后退按钮，底色为白色。
 
 ## 心得体会&技术难点
 1. 本地图片在页面中不显示。  
@@ -46,6 +46,32 @@ classnames: 有条件地添加类名。
 可以把 store export 出来，让其它模块可以直接引用。
 ```javascript
 export let store = createStore(reducers, data);
+```
+4. 以 *unicode* 方式使用 *iconfont* 图标，用状态进行判断时该怎么写？  
+**解决办法：**  
+给 *unicode* 包一个标签。
+```javascript
+//判断播放、暂停图标
+let iconPlayPause = () => {
+    return isPlaying ? <span>&#xe783;</span> : <span>&#xe781;</span>;
+};
+```
+5. 如何让 *iconfont* 图标实现旋转动画？  
+**解决办法：**  
+利用 css 中的 *animation, keyframes* 进行设置。所需动画的元素应显示为 *block 或 inline-block*。
+```css
+.playerb-right-load {
+    animation: load 2s infinite;
+    -webkit-animation: load 2s infinite;
+}
+@keyframes load {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+@-webkit-keyframes load {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
 ```
 
 ## 安装
