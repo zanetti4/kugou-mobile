@@ -56,6 +56,23 @@ let iconPlayPause = () => {
     return isPlaying ? <span>&#xe783;</span> : <span>&#xe781;</span>;
 };
 ```
+5. 如何让 *iconfont* 图标实现旋转动画？  
+**解决办法：**  
+利用 css 中的 *animation, keyframes* 进行设置。所需动画的元素应显示为 *block 或 inline-block*。
+```css
+.playerb-right-load {
+    animation: load 2s infinite;
+    -webkit-animation: load 2s infinite;
+}
+@keyframes load {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+@-webkit-keyframes load {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+```
 
 ## 安装
 
