@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Flex } from 'antd-mobile';
+import classnames from 'classnames';
 import {getSongInfo} from '../../server/api';
 import './player-bottom.css';
 
@@ -13,8 +14,12 @@ class PlayerBottom extends Component {
         this.state = {
             index: -1, //播放歌曲所在位置
             isPlaying: false, //是否正在播放
-            songInfo: {} //播放的歌曲信息
+            songInfo: {}, //播放的歌曲信息
+            prevLoad: false, //载入上一首歌
+            nextLoad: false //载入下一首歌
         };
+
+        this.audio = React.createRef();
     }
 
     //通过 hash 发请求，获取歌曲信息
@@ -24,13 +29,82 @@ class PlayerBottom extends Component {
         if(hash){
             //hash 不是空字符串
             getSongInfo(hash).then(({data}) => {
+                let {songList} = this.props;
+
+                //把 redux 中的 hash 清掉，否则再点击首次播放的歌曲时，props 没有改变就不执行 componentWillReceiveProps
+                this.props.dispatch({
+                    type: 'play',
+                    isPlay: true,
+                    hash: '',
+                    songList
+                });
+
                 this.setState({
                     isPlaying: true,
                     songInfo: data,
-                    index
+                    index,
+                    prevLoad: false,
+                    nextLoad: false
                 });
             });
         }
+    }
+
+    //暂停、播放
+    pausePlay = () => {
+        let audioPlayer = this.audio.current;
+
+        if(this.state.isPlaying){
+            //正在播放，需要暂停
+            audioPlayer.pause();
+        }else{
+            //暂停状态，需要播放
+            audioPlayer.play();
+        }
+
+        this.setState({isPlaying: !this.state.isPlaying});
+    }
+
+    //下一首
+    nextSong = () => {
+        this.setState({nextLoad: true});
+
+        let nextIndex = -1;
+        let {index} = this.state;
+        let {songList} = this.props;
+
+        if(index === songList.length - 1){
+            //当前播放的是最后一首
+            nextIndex = 0;
+        }else{
+            //当前播放的不是最后一首
+            nextIndex = ++index;
+        }
+
+        let nextHash = songList[nextIndex].hash;
+
+        this.getSongInfoByHash(nextHash);
+    }
+
+    //上一首
+    prevSong = () => {
+        this.setState({prevLoad: true});
+
+        let prevIndex = -1;
+        let {index} = this.state;
+        let {songList} = this.props;
+
+        if(index === 0){
+            //当前播放的是第一首
+            prevIndex = songList.length - 1;
+        }else{
+            //当前播放的不是第一首
+            prevIndex = --index;
+        }
+
+        let prevHash = songList[prevIndex].hash;
+
+        this.getSongInfoByHash(prevHash);
     }
 
     componentDidMount(){
@@ -53,48 +127,54 @@ class PlayerBottom extends Component {
         console.log(songList);
         console.log(this.state.songInfo);
 
-        let {songInfo, isPlaying} = this.state;
+        let {songInfo, isPlaying, prevLoad, nextLoad} = this.state;
 
         //处理图片
         let dealImg = () => {
             return songInfo.imgUrl && songInfo.imgUrl.replace('{size}', 240);
         };
 
-        //处理歌名
-        let dealSongName = () => {
-            let song = songList.find(song => {
-                return song.hash === hash;
-            });
-
-            if(song){
-                //在歌曲列表中找到这首歌
-                return song.filename;
-            }else{
-                //在歌曲列表中没有找到这首歌
-                return '';
-            }
-        };
-
         //判断播放、暂停图标
         let iconPlayPause = () => {
-            return isPlaying ? '&#xe783;' : '&#xe781;';
+            return isPlaying ? <span>&#xe783;</span> : <span>&#xe781;</span>;
         };
 
+        //判断上一首图标
+        let iconPrev = () => {
+            return prevLoad ? <span>&#xe788;</span> : <span>&#xe7ea;</span>;
+        };
+
+        //判断下一首图标
+        let iconNext = () => {
+            return nextLoad ? <span>&#xe788;</span> : <span>&#xe7eb;</span>;
+        };
+
+        let isShowPlayerBot = this.state.songInfo.hash
+        ? <div className="playerb">
+            <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong}></audio>
+            <Flex>
+                <Flex.Item>
+                    <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
+                </Flex.Item>
+                <Flex.Item className="playerb-2 playerb-center">
+                    <div>{songInfo.songName}</div>
+                    {songInfo.singerName}
+                </Flex.Item>
+                <Flex.Item className="playerb-2 playerb-right">
+                    <i className={classnames({
+                        iconfont: true,
+                        'playerb-right-load': prevLoad
+                    })} onClick={this.prevSong}>{iconPrev()}</i><i className="iconfont" onClick={this.pausePlay}>{iconPlayPause()}</i><i className={classnames({
+                        iconfont: true,
+                        'playerb-right-load': nextLoad
+                    })} onClick={this.nextSong}>{iconNext()}</i>
+                </Flex.Item>
+            </Flex>
+        </div>
+        : null;
+
         return ReactDOM.createPortal(
-            <div className="playerb">
-                <Flex>
-                    <Flex.Item>
-                        <img alt={songInfo.singerName} className="block-pic" src={dealImg()} />
-                    </Flex.Item>
-                    <Flex.Item className="playerb-2 playerb-center">
-                        <div>{dealSongName()}</div>
-                        {songInfo.singerName}
-                    </Flex.Item>
-                    <Flex.Item className="playerb-2 playerb-right">
-                        <i className="iconfont">&#xe7ea;</i><i className="iconfont">{iconPlayPause()}</i><i className="iconfont">&#xe7eb;</i>
-                    </Flex.Item>
-                </Flex>
-            </div>,
+            isShowPlayerBot,
             document.body
         );
     }
