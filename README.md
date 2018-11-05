@@ -47,6 +47,15 @@ classnames: 有条件地添加类名。
 ```javascript
 export let store = createStore(reducers, data);
 ```
+4. 以 *unicode* 方式使用 *iconfont* 图标，用状态进行判断时该怎么写？  
+**解决办法：**  
+给 *unicode* 包一个标签。
+```javascript
+//判断播放、暂停图标
+let iconPlayPause = () => {
+    return isPlaying ? <span>&#xe783;</span> : <span>&#xe781;</span>;
+};
+```
 
 ## 安装
 
