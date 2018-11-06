@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Tabs} from 'antd-mobile';
+import {connect} from 'react-redux';
+import {Tabs, NavBar, Icon} from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
 import {topNav} from '../../route/config';
 import './head.css';
@@ -17,17 +18,33 @@ class Nav extends Component {
             initPage = index;
         }
 
-        return (
-            <Tabs 
-                tabs={topNav}
-                initialPage={initPage}
-                page={initPage}
-                onChange={tab => {
-                    this.props.history.push(tab.path);
-                }}
-            ></Tabs>
-        );
+        let back = <Icon type="left" size="lg" color="#BBB" />;
+        let navBar = <NavBar
+            className="nav-title"
+            mode="light"
+            icon={back}
+            onLeftClick={() => console.log('onLeftClick')}
+        >{this.props.songName}</NavBar>;
+        let tabs = <Tabs 
+            tabs={topNav}
+            initialPage={initPage}
+            page={initPage}
+            onChange={tab => {
+                this.props.history.push(tab.path);
+            }}
+        ></Tabs>;
+        let which = this.props.isShowPlayer ? navBar : tabs;
+
+        return which;
     }
 }
 
-export default withRouter(Nav);
+//从 redux 获取是否显示播放器
+function mapStateToProps(state){
+    return {
+        isShowPlayer: state.isShowPlayer,
+        songName: state.songName
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(Nav));

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Flex } from 'antd-mobile';
 import classnames from 'classnames';
 import {getSongInfo} from '../../server/api';
+import BigPlayer from './bigPlayer/big-player';
 import './player-bottom.css';
 
 class PlayerBottom extends Component {
@@ -31,13 +32,7 @@ class PlayerBottom extends Component {
             getSongInfo(hash).then(({data}) => {
                 let {songList} = this.props;
 
-                //把 redux 中的 hash 清掉，否则再点击首次播放的歌曲时，props 没有改变就不执行 componentWillReceiveProps
-                this.props.dispatch({
-                    type: 'play',
-                    isPlay: true,
-                    hash: '',
-                    songList
-                });
+                this.props.play(songList);
 
                 this.setState({
                     isPlaying: true,
@@ -149,28 +144,34 @@ class PlayerBottom extends Component {
             return nextLoad ? <span>&#xe788;</span> : <span>&#xe7eb;</span>;
         };
 
-        let isShowPlayerBot = this.state.songInfo.hash
-        ? <div className="playerb">
-            <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong}></audio>
-            <Flex>
-                <Flex.Item>
-                    <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
-                </Flex.Item>
-                <Flex.Item className="playerb-2 playerb-center">
-                    <div>{songInfo.songName}</div>
-                    {songInfo.singerName}
-                </Flex.Item>
-                <Flex.Item className="playerb-2 playerb-right">
-                    <i className={classnames({
-                        iconfont: true,
-                        'playerb-right-load': prevLoad
-                    })} onClick={this.prevSong}>{iconPrev()}</i><i className="iconfont" onClick={this.pausePlay}>{iconPlayPause()}</i><i className={classnames({
-                        iconfont: true,
-                        'playerb-right-load': nextLoad
-                    })} onClick={this.nextSong}>{iconNext()}</i>
-                </Flex.Item>
-            </Flex>
-        </div>
+        // let isShowPlayerBot = this.state.songInfo.hash
+        let isShowPlayerBot = true
+        ? <React.Fragment>
+            <div className="playerb">
+                <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong}></audio>
+                <Flex>
+                    <Flex.Item onClick={() => {
+                        this.props.showPlayer(songInfo.songName);
+                    }}>
+                        <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
+                    </Flex.Item>
+                    <Flex.Item className="playerb-2 playerb-center">
+                        <div>{songInfo.songName}</div>
+                        {songInfo.singerName}
+                    </Flex.Item>
+                    <Flex.Item className="playerb-2 playerb-right">
+                        <i className={classnames({
+                            iconfont: true,
+                            'playerb-right-load': prevLoad
+                        })} onClick={this.prevSong}>{iconPrev()}</i><i className="iconfont" onClick={this.pausePlay}>{iconPlayPause()}</i><i className={classnames({
+                            iconfont: true,
+                            'playerb-right-load': nextLoad
+                        })} onClick={this.nextSong}>{iconNext()}</i>
+                    </Flex.Item>
+                </Flex>
+            </div>
+            <BigPlayer />
+        </React.Fragment>
         : null;
 
         return ReactDOM.createPortal(
@@ -198,4 +199,27 @@ function mapStateToProps(state){
     };
 };
 
-export default connect(mapStateToProps)(PlayerBottom);
+//修改 redux 中的值
+function mapDispatchToProps(dispatch){
+    return {
+        //显示大播放器
+        showPlayer(songName){
+            dispatch({
+                type: 'showPlayer',
+                isShowPlayer: true,
+                songName
+            });
+        },
+        //把 redux 中的 hash 清掉，否则再点击首次播放的歌曲时，props 没有改变就不执行 componentWillReceiveProps
+        play(songList){
+            dispatch({
+                type: 'play',
+                isPlay: true,
+                hash: '',
+                songList
+            });
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerBottom);

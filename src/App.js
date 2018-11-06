@@ -34,7 +34,8 @@ class App extends Component {
                     <div className="content app-main" ref={this.main}>
                         <Routes />
                     </div>
-                    {isPlay ? <PlayerBottom /> : null}
+                    {/* {isPlay ? <PlayerBottom /> : null} */}
+                    {true ? <PlayerBottom /> : null}
                 </React.Fragment>
             </Router>
         );

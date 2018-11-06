@@ -10,7 +10,9 @@ let data = {
     mainPt: 0,
     isPlay: false,
     hash: '',
-    songList: []
+    songList: [],
+    isShowPlayer: false,
+    songName: ''
 };
 
 export let store = createStore(reducers, data);

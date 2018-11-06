@@ -16,6 +16,14 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'showPlayer':
+            return {
+                ...state,
+                isShowPlayer: action.isShowPlayer,
+                songName: action.songName
+            };
+
+            break;
         default:
             return state;
     }

@@ -1,0 +1,23 @@
+.big {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 70;
+    top: 0;
+    left: 0;
+    filter: blur(.1rem);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-color: blue;
+}
+.big-mask {
+    position: absolute;
+    z-index: 80;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .6);
+    padding-top: 2rem;
+}

@@ -6,3 +6,9 @@
 }
 .head .top {background-color: #2CA2F9;}
 .head .am-tabs-default-bar-tab {font-size: 0.37rem;}
+.head .nav-title {height: .91rem;}
+.head .nav-title .am-navbar-title {
+    color: #333;
+    font-size: .35rem;
+}
+.head .nav-title .am-navbar-left {padding-left: 0;}
