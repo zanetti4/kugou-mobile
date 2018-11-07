@@ -8,4 +8,17 @@ export const getStyle = (obj, name) => {
     }
 };
 
-export default {getStyle};
+//补零
+export const addZero = (num) => {
+    return num = num < 10 ? ('0'+num) : num;
+};
+
+//秒转时间
+export const convertSecond = (seconds) => {
+    let minute = parseInt(seconds/60);
+    let second = Math.floor(seconds%60);
+
+    return `${addZero(minute)}:${addZero(second)}`;
+};
+
+export default {getStyle, convertSecond};

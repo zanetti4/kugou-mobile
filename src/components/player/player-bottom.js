@@ -17,7 +17,8 @@ class PlayerBottom extends Component {
             isPlaying: false, //是否正在播放
             songInfo: {}, //播放的歌曲信息
             prevLoad: false, //载入上一首歌
-            nextLoad: false //载入下一首歌
+            nextLoad: false, //载入下一首歌
+            currentTime: 0
         };
 
         this.audio = React.createRef();
@@ -102,6 +103,13 @@ class PlayerBottom extends Component {
         this.getSongInfoByHash(prevHash);
     }
 
+    //获取歌曲当前时间
+    getCurTime = () => {
+        let audioPlayer = this.audio.current;
+
+        this.setState({currentTime: audioPlayer.currentTime});
+    }
+
     componentDidMount(){
         let {hash} = this.props;
 
@@ -116,13 +124,13 @@ class PlayerBottom extends Component {
     }
 
     render() {
-        let {hash, songList} = this.props;
+        let {hash, songList, isShowPlayer} = this.props;
 
         console.log(hash);
         console.log(songList);
         console.log(this.state.songInfo);
 
-        let {songInfo, isPlaying, prevLoad, nextLoad} = this.state;
+        let {songInfo, isPlaying, prevLoad, nextLoad, currentTime} = this.state;
 
         //处理图片
         let dealImg = () => {
@@ -144,11 +152,10 @@ class PlayerBottom extends Component {
             return nextLoad ? <span>&#xe788;</span> : <span>&#xe7eb;</span>;
         };
 
-        // let isShowPlayerBot = this.state.songInfo.hash
-        let isShowPlayerBot = true
+        let isShowPlayerBot = this.state.songInfo.hash
         ? <React.Fragment>
             <div className="playerb">
-                <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong}></audio>
+                <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong} onTimeUpdate={this.getCurTime}></audio>
                 <Flex>
                     <Flex.Item onClick={() => {
                         this.props.showPlayer(songInfo.songName);
@@ -170,7 +177,7 @@ class PlayerBottom extends Component {
                     </Flex.Item>
                 </Flex>
             </div>
-            <BigPlayer />
+            {isShowPlayer ? <BigPlayer img={dealImg()} isPlaying={isPlaying} duration={songInfo.timeLength} singerName={songInfo.singerName} curTime={currentTime} /> : null}
         </React.Fragment>
         : null;
 
@@ -195,7 +202,8 @@ PlayerBottom.propTypes = {
 function mapStateToProps(state){
     return {
         hash: state.hash,
-        songList: state.songList
+        songList: state.songList,
+        isShowPlayer: state.isShowPlayer
     };
 };
 
