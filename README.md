@@ -73,6 +73,9 @@ let iconPlayPause = () => {
     to {transform: rotate(360deg);}
 }
 ```
+6. 如何给元素动态设置样式？  
+**解决办法：**  
+用 *style* 设置内联样式，而不是 *ref* 获取 dom 元素，再进行设置。操作 dom 耗费性能且容易出错。
 
 ## 安装
 
