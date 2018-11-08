@@ -31,9 +31,10 @@ class PlayerBottom extends Component {
         if(hash){
             //hash 不是空字符串
             getSongInfo(hash).then(({data}) => {
-                let {songList} = this.props;
+                let {songList, saveSongName, play} = this.props;
 
-                this.props.play(songList);
+                play(songList);
+                saveSongName(data.songName);
 
                 this.setState({
                     isPlaying: true,
@@ -110,6 +111,14 @@ class PlayerBottom extends Component {
         this.setState({currentTime: audioPlayer.currentTime});
     }
 
+    //更新歌曲当前时间
+    updateTime = (time) => {
+        let audioPlayer = this.audio.current;
+
+        audioPlayer.currentTime = time;
+        this.setState({currentTime: time});
+    }
+
     componentDidMount(){
         let {hash} = this.props;
 
@@ -158,7 +167,7 @@ class PlayerBottom extends Component {
                 <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong} onTimeUpdate={this.getCurTime}></audio>
                 <Flex>
                     <Flex.Item onClick={() => {
-                        this.props.showPlayer(songInfo.songName);
+                        this.props.showPlayer();
                     }}>
                         <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
                     </Flex.Item>
@@ -177,7 +186,7 @@ class PlayerBottom extends Component {
                     </Flex.Item>
                 </Flex>
             </div>
-            {isShowPlayer ? <BigPlayer img={dealImg()} isPlaying={isPlaying} duration={songInfo.timeLength} singerName={songInfo.singerName} curTime={currentTime} /> : null}
+            {isShowPlayer ? <BigPlayer img={dealImg()} isPlaying={isPlaying} duration={songInfo.timeLength} singerName={songInfo.singerName} curTime={currentTime} pausePlay={this.pausePlay} nextSong={this.nextSong} nextLoad={nextLoad} prevSong={this.prevSong} prevLoad={prevLoad} updateTime={this.updateTime} /> : null}
         </React.Fragment>
         : null;
 
@@ -211,10 +220,16 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         //显示大播放器
-        showPlayer(songName){
+        showPlayer(){
             dispatch({
                 type: 'showPlayer',
-                isShowPlayer: true,
+                isShowPlayer: true
+            });
+        },
+        //把歌名存在 redux 中
+        saveSongName(songName){
+            dispatch({
+                type: 'saveSongName',
                 songName
             });
         },

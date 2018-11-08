@@ -21,4 +21,17 @@ export const convertSecond = (seconds) => {
     return `${addZero(minute)}:${addZero(second)}`;
 };
 
-export default {getStyle, convertSecond};
+var mo=function(e){e.preventDefault()};
+//禁止页面滚动
+export const stop = () => {
+    document.body.style.overflow='hidden';
+    document.addEventListener("touchmove",mo, {passive: false});//禁止页面滑动
+};
+
+//取消禁止页面滚动
+export const move = () => {
+    document.body.style.overflow='';//出现滚动条
+    document.removeEventListener("touchmove",mo, {passive: false});
+};
+
+export default {getStyle, convertSecond, stop, move};

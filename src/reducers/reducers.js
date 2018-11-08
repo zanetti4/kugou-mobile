@@ -19,7 +19,13 @@ export default function(state = {}, action){
         case 'showPlayer':
             return {
                 ...state,
-                isShowPlayer: action.isShowPlayer,
+                isShowPlayer: action.isShowPlayer
+            };
+
+            break;
+        case 'saveSongName':
+            return {
+                ...state,
                 songName: action.songName
             };
 

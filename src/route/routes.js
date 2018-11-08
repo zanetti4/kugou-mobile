@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import config from './config';
 import {Route, Switch, Redirect} from 'react-router-dom';
+import config from './config';
 
 class Routes extends Component {
     render() {

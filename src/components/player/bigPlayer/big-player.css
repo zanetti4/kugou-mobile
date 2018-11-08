@@ -1,7 +1,7 @@
 .big {
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     z-index: 70;
     top: 0;
     left: 0;
@@ -37,9 +37,20 @@
 .controller .controller-progress {
     background-color: #666;
     margin-bottom: .4rem;
+    border-radius: .1rem;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
+}
+.controller .controller-progress .am-progress-bar {
+    border-radius: .1rem 0 0 .1rem;
+    -webkit-border-radius: .1rem 0 0 .1rem;
+    -moz-border-radius: .1rem 0 0 .1rem;
 }
 .controller-btns {text-align: center;}
-.controller-btns i {font-size: .8rem;}
+.controller-btns i {
+    font-size: .8rem;
+    display: inline-block;
+}
 .controller-btns i.controller-btns-pp {
     font-size: 1.2rem;
     vertical-align: sub;

@@ -13,8 +13,6 @@ export let getData = function(serverName, params = {}){
                     data: {},
                     isLoading: true
                 };
-
-                this.loadWrap = React.createRef();
             }
 
             componentDidMount(){
@@ -38,19 +36,12 @@ export let getData = function(serverName, params = {}){
                         isLoading: false
                     });
                 });
-
-                //使 loading 垂直居中
-                let unsub = store.subscribe(() => {
-                    let state = store.getState();
-                    let loadPt = (document.documentElement.clientHeight - state.mainPt - 36)/2;
-
-                    this.loadWrap.current.style.paddingTop = `${loadPt}px`;
-                    unsub();
-                });
             }
 
             render(){
-                let loading = <div className="load" ref={this.loadWrap}>
+                let state = store.getState();
+                let loadPt = (document.documentElement.clientHeight - state.mainPt - 36)/2;
+                let loading = <div className="load" style={{paddingTop: `${loadPt}px`}}>
                     <Icon type="loading" size="lg" />
                 </div>;
 
