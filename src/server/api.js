@@ -103,6 +103,22 @@ export const getSongInfo = (hash = '') => {
     });
 };
 
+//获取歌词
+export const getLyric = (params = {
+    hash: '',
+    keyword: '',
+    timelength: 0
+}) => {
+    return requestMp3('/app/i/krc.php', {
+        params: {
+            cmd: 100,
+            hash: params.hash,
+            keyword: params.keyword,
+            timelength: params.timelength
+        }
+    });
+};
+
 export default {
     getNewSongData,
     getRankList,
@@ -110,5 +126,6 @@ export default {
     getSingers,
     getSingerList,
     getSingerInfo,
-    getSongInfo
+    getSongInfo,
+    getLyric
 };

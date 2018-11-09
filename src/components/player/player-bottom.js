@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Flex } from 'antd-mobile';
 import classnames from 'classnames';
-import {getSongInfo} from '../../server/api';
+import {getSongInfo, getLyric} from '../../server/api';
 import BigPlayer from './bigPlayer/big-player';
 import './player-bottom.css';
 
@@ -18,14 +18,15 @@ class PlayerBottom extends Component {
             songInfo: {}, //播放的歌曲信息
             prevLoad: false, //载入上一首歌
             nextLoad: false, //载入下一首歌
-            currentTime: 0
+            currentTime: 0, //当前播放时间
+            lyric: '' //歌词
         };
 
         this.audio = React.createRef();
     }
 
     //通过 hash 发请求，获取歌曲信息
-    getSongInfoByHash = (hash) => {
+    getSongInfoByHash = (hash, isShowPlayer = false) => {
         let index = this.props.songList.findIndex(song => song.hash === hash);
 
         if(hash){
@@ -43,6 +44,19 @@ class PlayerBottom extends Component {
                     prevLoad: false,
                     nextLoad: false
                 });
+            });
+        }
+
+        if(isShowPlayer){
+            //显示大播放器
+            let {fileName, timeLength} = this.state.songInfo;
+
+            getLyric({
+                hash,
+                keyword: fileName,
+                timelength: timeLength*1000
+            }).then(({data}) => {
+                this.setState({lyric: data});
             });
         }
     }
@@ -68,7 +82,7 @@ class PlayerBottom extends Component {
 
         let nextIndex = -1;
         let {index} = this.state;
-        let {songList} = this.props;
+        let {songList, isShowPlayer} = this.props;
 
         if(index === songList.length - 1){
             //当前播放的是最后一首
@@ -80,7 +94,7 @@ class PlayerBottom extends Component {
 
         let nextHash = songList[nextIndex].hash;
 
-        this.getSongInfoByHash(nextHash);
+        this.getSongInfoByHash(nextHash, isShowPlayer);
     }
 
     //上一首
@@ -89,7 +103,7 @@ class PlayerBottom extends Component {
 
         let prevIndex = -1;
         let {index} = this.state;
-        let {songList} = this.props;
+        let {songList, isShowPlayer} = this.props;
 
         if(index === 0){
             //当前播放的是第一首
@@ -101,7 +115,7 @@ class PlayerBottom extends Component {
 
         let prevHash = songList[prevIndex].hash;
 
-        this.getSongInfoByHash(prevHash);
+        this.getSongInfoByHash(prevHash, isShowPlayer);
     }
 
     //获取歌曲当前时间
@@ -127,19 +141,19 @@ class PlayerBottom extends Component {
 
     componentWillReceiveProps(nextProps){
         //点击另一首歌时，执行这里
-        let {hash} = nextProps;
+        let {hash, isShowPlayer} = nextProps;
 
-        this.getSongInfoByHash(hash);
+        this.getSongInfoByHash(hash, isShowPlayer);
     }
 
     render() {
-        let {hash, songList, isShowPlayer} = this.props;
+        let {hash, songList, isShowPlayer, showPlayer} = this.props;
 
-        console.log(hash);
+        /* console.log(hash);
         console.log(songList);
-        console.log(this.state.songInfo);
+        console.log(this.state.songInfo); */
 
-        let {songInfo, isPlaying, prevLoad, nextLoad, currentTime} = this.state;
+        let {songInfo, isPlaying, prevLoad, nextLoad, currentTime, lyric} = this.state;
 
         //处理图片
         let dealImg = () => {
@@ -160,18 +174,21 @@ class PlayerBottom extends Component {
         let iconNext = () => {
             return nextLoad ? <span>&#xe788;</span> : <span>&#xe7eb;</span>;
         };
-
+        
+        let showPlayerLyric = isShowPlayer && lyric;
         let isShowPlayerBot = this.state.songInfo.hash
         ? <React.Fragment>
             <div className="playerb">
                 <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong} onTimeUpdate={this.getCurTime}></audio>
                 <Flex>
                     <Flex.Item onClick={() => {
-                        this.props.showPlayer();
+                        showPlayer();
                     }}>
                         <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
                     </Flex.Item>
-                    <Flex.Item className="playerb-2 playerb-center">
+                    <Flex.Item className="playerb-2 playerb-center" onClick={() => {
+                        showPlayer();
+                    }}>
                         <div>{songInfo.songName}</div>
                         {songInfo.singerName}
                     </Flex.Item>
@@ -186,7 +203,7 @@ class PlayerBottom extends Component {
                     </Flex.Item>
                 </Flex>
             </div>
-            {isShowPlayer ? <BigPlayer img={dealImg()} isPlaying={isPlaying} duration={songInfo.timeLength} singerName={songInfo.singerName} curTime={currentTime} pausePlay={this.pausePlay} nextSong={this.nextSong} nextLoad={nextLoad} prevSong={this.prevSong} prevLoad={prevLoad} updateTime={this.updateTime} /> : null}
+            {showPlayerLyric ? <BigPlayer img={dealImg()} isPlaying={isPlaying} duration={songInfo.timeLength} singerName={songInfo.singerName} curTime={currentTime} pausePlay={this.pausePlay} nextSong={this.nextSong} nextLoad={nextLoad} prevSong={this.prevSong} prevLoad={prevLoad} updateTime={this.updateTime} lyric={lyric} /> : null}
         </React.Fragment>
         : null;
 

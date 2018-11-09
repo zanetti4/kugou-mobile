@@ -23,7 +23,7 @@
 .big-mask img {
     display: block;
     width: 3.5rem;
-    margin: 0 auto .7rem;
+    margin: 0 auto .4rem;
 }
 .controller {
     color: #DDD;
@@ -56,3 +56,23 @@
     vertical-align: sub;
     margin: 0 .5rem;
 }
+.lyric {
+    position: relative;
+    z-index: 85;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.lyric ul {
+    position: absolute;
+    z-index: 90;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #ACACAC;
+    list-style-type: none;
+    font-size: .28rem;
+    line-height: 2;
+    text-align: center;
+    transition: top .4s;
+}
+.lyric ul li.lyric-active {color: #D1C90E;}
