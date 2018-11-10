@@ -34,4 +34,13 @@ export const move = () => {
     document.removeEventListener("touchmove",mo, {passive: false});
 };
 
-export default {getStyle, convertSecond, stop, move};
+//判断元素是否在可视区
+export const isView = (el) => {
+    var viewT = el.getBoundingClientRect().top; // 到可视区上边的距离
+    var h = document.documentElement.clientHeight;
+
+    viewT = viewT < 0 ? el.offsetHeight + viewT : viewT;
+    return viewT < 0 ? false : viewT < h;
+};
+
+export default {getStyle, convertSecond, stop, move, isView};

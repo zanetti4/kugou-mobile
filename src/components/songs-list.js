@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import { List, WingBlank } from 'antd-mobile';
-import classnames from 'classnames';
 
 const Item = List.Item;
 
@@ -28,14 +27,9 @@ class SongsList extends Component {
             }}>{song.filename}</Item>;
         });
 
-        let {isPlay} = this.props;
-
         return ( 
             <WingBlank size="sm">
-                <List className={classnames({
-                    'songsl-list': true,
-                    'songsl-lpb': isPlay
-                })}>
+                <List className="songsl-list">
                     {items}
                 </List>
             </WingBlank>
@@ -44,20 +38,11 @@ class SongsList extends Component {
 }
 
 SongsList.defaultProps = {
-    list: [],
-    isPlay: false
+    list: []
 }
 
 SongsList.propTypes = {
-    list: PropTypes.array,
-    isPlay: PropTypes.bool
+    list: PropTypes.array
 }
 
-//从 redux 获取是否需要播放歌曲
-function mapStateToProps(state){
-    return {
-        isPlay: state.isPlay
-    };
-};
-
-export default connect(mapStateToProps)(SongsList);
+export default connect()(SongsList);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Routes from './route/routes';
 import Head from './components/head/head';
 import PlayerBottom from './components/player/player-bottom';
@@ -31,7 +33,10 @@ class App extends Component {
             <Router>
                 <React.Fragment>
                     <Head />
-                    <div className="content app-main" ref={this.main}>
+                    <div className={classnames({
+                        'songsl-lpb': isPlay,
+                        'app-main': true
+                    })} ref={this.main}>
                         <Routes />
                     </div>
                     {isPlay ? <PlayerBottom /> : null}
@@ -39,6 +44,14 @@ class App extends Component {
             </Router>
         );
     }
+}
+
+App.defaultProps = {
+    isPlay: false
+}
+
+App.propTypes = {
+    isPlay: PropTypes.bool
 }
 
 //从 redux 获取是否需要播放歌曲

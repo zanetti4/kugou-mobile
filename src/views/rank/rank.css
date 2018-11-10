@@ -1,0 +1,17 @@
+.rank .am-list-item {
+    padding: 0 0 .2rem .14rem;
+    border-bottom: solid 1px #DDD;
+    margin-bottom: .2rem;
+}
+.rank .am-list-item:last-child {margin-bottom: 0;}
+.rank .am-list-item .am-list-line {
+    padding-right: .14rem;
+    position: static;
+}
+.rank .am-list-item .am-list-line .am-list-content {color: #333;}
+.rank .am-list-item .am-list-thumb:first-child {width: 1.72rem;}
+.rank .am-list-item .am-list-thumb img {
+    width: 100%;
+    height: auto;
+}
+html:not([data-scale]) .rank .am-list-body::before, html:not([data-scale]) .rank .am-list-body::after {background-color: transparent;}

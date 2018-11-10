@@ -1,5 +1,6 @@
 import NewSong from '../views/new-song/new-song';
 import Rank from '../views/rank/rank';
+import RankInfo from '../views/rank/rank-info/rank-info';
 
 export let topNav = [
     {
@@ -34,7 +35,8 @@ export let search = {
 export let second = [
     {
         path: '/rank/list/:id',
-        title: '榜单'
+        title: '榜单',
+        component: RankInfo,
     },
     {
         path: '/plist/list/:id',
