@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Tabs, NavBar, Icon} from 'antd-mobile';
-import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {topNav} from '../../route/config';
 import {move} from '../../assets/js/myFn';
 import './head.css';
 
 class Nav extends Component {
-    render() {
-        let {songName, isShowPlayer, history, location, showPlayer} = this.props;
-        let initPage = 0;
-        //如果当前在除了新歌的顶部一级路由，刷新页面后依然停留在这儿。
-        let index = topNav.findIndex(obj => {
-            return obj.path === location.pathname;
-        });
+    //切换选项卡
+    changePage = (path, index) => {
+        this.props.changePageHead(path, index);
+    }
 
-        if(index !== -1){
-            //当前在顶部一级路由
-            initPage = index;
-        }
+    render() {
+        let {songName, isShowPlayer, showPlayer, initPage, indexPage} = this.props;
 
         //隐藏大播放器并取消禁止页面滚动
         let cancelPlayer = () => {
@@ -36,14 +31,25 @@ class Nav extends Component {
         let tabs = <Tabs 
             tabs={topNav}
             initialPage={initPage}
-            onChange={tab => {
-                history.push(tab.path);
+            page={indexPage}
+            onChange={(tab, index) => {
+                this.changePage(tab.path, index);
             }}
         ></Tabs>;
         let which = isShowPlayer ? navBar : tabs;
 
         return which;
     }
+}
+
+Nav.defaultProps = {
+    initPage: 0,
+    indexPage: -1
+}
+
+Nav.propTypes = {
+    initPage: PropTypes.number,
+    indexPage: PropTypes.number
 }
 
 //从 redux 获取是否显示播放器
@@ -67,4 +73,4 @@ function mapDispatchToProps(dispatch){
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Nav));
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

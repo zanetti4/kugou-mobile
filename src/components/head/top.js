@@ -5,7 +5,9 @@ import './head.css';
 
 class Top extends Component {
     toHome = () => {
-        this.props.history.push('/');
+        let {history} = this.props;
+
+        history.push('/');
     }
 
     render() {
