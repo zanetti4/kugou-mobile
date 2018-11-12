@@ -15,6 +15,7 @@ prop-types: 对 props 进行验证。
 redux: JavaScript 状态容器，提供可预测化的状态管理。
 react-redux: 将 react 绑定到 redux。
 classnames: 有条件地添加类名。
+js-cookie: 简单、轻量的操作 cookie 的 js 接口。
 ```
 
 ## 路由设计及功能
@@ -79,6 +80,26 @@ let iconPlayPause = () => {
 7. 如何精确获取 dom 尺寸？  
 **解决办法：**  
 在用 *clientHeight* 获取元素高度时，取到的值为整数。用 *getComputedStyle()* 方法获取到的值能精确到小数。
+8. *render* 应该为一个纯函数，不能写 *setState* 和执行组件的方法，因为组件的方法和外界联系的唯一方式也是 *setState*。
+9. *setState* 后无法立刻获取到更新的状态，怎么处理？  
+**解决办法：**  
+利用回调函数。
+```javascript
+setState(updater, [callback])
+```
+10. 组件挂载后执行了异步操作（发了 ajax 请求），切换路由时会报错。*Can't call setState (or forceUpdate) on an unmounted component...*  
+**错误原因：**  
+因为在组件挂载（mounted）之后进行了异步操作，比如ajax请求或者设置了定时器等，而在callback中进行了setState操作。当切换路由时，组件已经被卸载（unmounted）了，此时异步操作中callback还在执行，因此setState没有得到值。  
+**解决办法：**  
+在卸载组件的时候对所有的异步操作进行清除。比如用 *axios* 发的请求。
+```javascript
+componentWillUnmount(){
+    var CancelToken = axios.CancelToken;
+    var source = CancelToken.source();
+    
+    source.cancel('组件销毁时取消请求。');
+}
+```
 
 ## 安装
 
