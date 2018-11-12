@@ -15,6 +15,7 @@ prop-types: 对 props 进行验证。
 redux: JavaScript 状态容器，提供可预测化的状态管理。
 react-redux: 将 react 绑定到 redux。
 classnames: 有条件地添加类名。
+js-cookie: 简单、轻量的操作 cookie 的 js 接口。
 ```
 
 ## 路由设计及功能
