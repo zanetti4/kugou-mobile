@@ -87,6 +87,19 @@ let iconPlayPause = () => {
 ```javascript
 setState(updater, [callback])
 ```
+10. 组件挂载后执行了异步操作（发了 ajax 请求），切换路由时会报错。*Can't call setState (or forceUpdate) on an unmounted component...*  
+**错误原因：**  
+因为在组件挂载（mounted）之后进行了异步操作，比如ajax请求或者设置了定时器等，而在callback中进行了setState操作。当切换路由时，组件已经被卸载（unmounted）了，此时异步操作中callback还在执行，因此setState没有得到值。  
+**解决办法：**  
+在卸载组件的时候对所有的异步操作进行清除。比如用 *axios* 发的请求。
+```javascript
+componentWillUnmount(){
+    var CancelToken = axios.CancelToken;
+    var source = CancelToken.source();
+    
+    source.cancel('组件销毁时取消请求。');
+}
+```
 
 ## 安装
 
