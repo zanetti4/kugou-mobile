@@ -80,6 +80,12 @@ let iconPlayPause = () => {
 **解决办法：**  
 在用 *clientHeight* 获取元素高度时，取到的值为整数。用 *getComputedStyle()* 方法获取到的值能精确到小数。
 8. *render* 应该为一个纯函数，不能写 *setState* 和执行组件的方法，因为组件的方法和外界联系的唯一方式也是 *setState*。
+9. *setState* 后无法立刻获取到更新的状态，怎么处理？  
+**解决办法：**  
+利用回调函数。
+```javascript
+setState(updater, [callback])
+```
 
 ## 安装
 
