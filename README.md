@@ -79,6 +79,7 @@ let iconPlayPause = () => {
 7. 如何精确获取 dom 尺寸？  
 **解决办法：**  
 在用 *clientHeight* 获取元素高度时，取到的值为整数。用 *getComputedStyle()* 方法获取到的值能精确到小数。
+8. *render* 应该为一个纯函数，不能写 *setState* 和执行组件的方法，因为组件的方法和外界联系的唯一方式也是 *setState*。
 
 ## 安装
 
