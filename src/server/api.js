@@ -91,6 +91,11 @@ export const getSingerInfo = (params = { singerid: '' }) => {
     return request(`/singer/info/${params.singerid}?json=true`);
 };
 
+//根据榜单 id，获取榜单信息
+export const getRankInfo = (rankId = '') => {
+    return request(`/rank/info/${rankId}?json=true`);
+};
+
 //获取歌曲详细信息
 export const getSongInfo = (hash = '') => {
     return requestMp3('/app/i/getSongInfo.php', {
@@ -119,6 +124,13 @@ export const getLyric = (params = {
     });
 };
 
+var CancelToken = axios.CancelToken;
+var source = CancelToken.source();
+
+export const cancelRequest = () => {
+    source.cancel('组件销毁时取消请求。');
+};
+
 export default {
     getNewSongData,
     getRankList,
@@ -127,5 +139,7 @@ export default {
     getSingerList,
     getSingerInfo,
     getSongInfo,
-    getLyric
+    getLyric,
+    getRankInfo,
+    cancelRequest
 };

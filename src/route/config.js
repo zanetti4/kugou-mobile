@@ -35,7 +35,7 @@ export let search = {
 export let second = [
     {
         path: '/rank/list/:id',
-        title: '榜单',
+        title: '榜单信息',
         component: RankInfo,
     },
     {

@@ -12,7 +12,8 @@ let data = {
     hash: '',
     songList: [],
     isShowPlayer: false,
-    songName: ''
+    songName: '',
+    titleName: ''
 };
 
 export let store = createStore(reducers, data);

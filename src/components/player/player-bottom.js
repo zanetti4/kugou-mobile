@@ -147,12 +147,7 @@ class PlayerBottom extends Component {
     }
 
     render() {
-        let {hash, songList, isShowPlayer, showPlayer} = this.props;
-
-        /* console.log(hash);
-        console.log(songList);
-        console.log(this.state.songInfo); */
-
+        let {isShowPlayer, showPlayer} = this.props;
         let {songInfo, isPlaying, prevLoad, nextLoad, currentTime, lyric} = this.state;
 
         //处理图片

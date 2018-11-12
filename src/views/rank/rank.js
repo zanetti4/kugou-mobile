@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import { List, WingBlank } from 'antd-mobile';
+import Cookies from 'js-cookie';
 import {getData} from '../../server/getData';
 import {isView} from '../../assets/js/myFn';
 import './rank.css';
@@ -8,8 +10,16 @@ const Item = List.Item;
 
 class Rank extends Component {
     //进入榜单信息页
-    toRankInfo = (rankId) => {
-        this.props.history.push(`/rank/list/${rankId}`);
+    toRankInfo = (rankId, rankName) => {
+        let {history, dispatch} = this.props;
+
+        dispatch({
+            type: 'saveTitleName',
+            titleName: rankName
+        });
+
+        Cookies.set('titleName', rankName);
+        history.push(`/rank/list/${rankId}`);
     }
 
     componentDidMount(){
@@ -40,20 +50,20 @@ class Rank extends Component {
     }
 
     render() {
-        console.log(this.props.data.data);
-
         let {data} = this.props.data;
         let defImg = 'http://m.kugou.com/static/images/share2014/default.png';
 
         let html = data.map(rank => {
+            let {id, rankid, rankname} = rank;
+
             return <Item
-                key={rank.id}
+                key={id}
                 arrow="horizontal"
                 thumb={defImg}
                 onClick={() => {
-                    this.toRankInfo(rank.rankid);
+                    this.toRankInfo(rankid, rankname);
                 }}
-            >{rank.rankname}</Item>;
+            >{rankname}</Item>;
         });
 
         return ( 
@@ -64,4 +74,4 @@ class Rank extends Component {
     }
 }
 
-export default getData('getRankList')(Rank);
+export default connect()(getData('getRankList')(Rank));

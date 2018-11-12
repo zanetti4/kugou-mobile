@@ -1,0 +1,38 @@
+.rankb {
+    position: relative;
+    z-index: 0;
+    height: 4rem;
+    overflow: hidden;
+}
+.rankb div {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    color: white;
+    padding-left: .5rem;
+    line-height: 3;
+    width: 100%;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/* for w3c */
+	background-image: linear-gradient(top, transparent 0%, rgba(0, 0, 0, .6) 100%);
+	/* for FF 3.6+ */
+	background-image: -moz-linear-gradient(50% 0% 270deg, transparent, rgba(0, 0, 0, .6) 100%);
+	/* for chrome, safari 4+ */
+	background-image: -webkit-gradient(linear,50% 0%, 50% 100%,from(transparent),to(rgba(0, 0, 0, .6)));
+	/* for chrome 10+, safari 5.1+ */
+	background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, .6) 100%);
+	/* for opera 11.10+ */
+	background-image: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, .6) 100%);
+	/* for ie 10+ */
+	background-image: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, .6) 100%);
+}
+.rankb img {
+    max-width: 100%;
+    display: block;
+    margin-top: -1.9rem;
+}

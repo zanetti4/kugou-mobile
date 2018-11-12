@@ -30,6 +30,13 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'saveTitleName':
+            return {
+                ...state,
+                titleName: action.titleName
+            };
+
+            break;
         default:
             return state;
     }
