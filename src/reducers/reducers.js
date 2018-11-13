@@ -37,6 +37,13 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'changeLoading':
+            return {
+                ...state,
+                isLoading: action.isLoading
+            };
+
+            break;
         default:
             return state;
     }

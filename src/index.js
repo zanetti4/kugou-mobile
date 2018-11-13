@@ -13,7 +13,8 @@ let data = {
     songList: [],
     isShowPlayer: false,
     songName: '',
-    titleName: ''
+    titleName: '',
+    isLoading: true
 };
 
 export let store = createStore(reducers, data);

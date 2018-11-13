@@ -37,14 +37,47 @@ ul {
 .app-main {padding-top: 2rem;}
 .load {text-align: center;}
 
-/* 歌曲列表 */
+/* 歌曲长列表 */
 .songs-row {
     border-bottom: solid 1px #E5E5E5;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 0 0.14rem;
+    font-size: .32rem;
+    line-height: 4;
 }
 .songs-list {overflow: auto;}
+.songs-lv .am-flexbox .songs-lv-name {flex: 15 1;}
+html:not([data-scale]) .songs-lv .am-list-body::after {background-color: transparent;}
+.songs-lv-row {
+    border-bottom: solid 1px #E5E5E5;
+    padding: .45rem .14rem;
+    font-size: .32rem;
+}
+.songs-lv-num {
+    font-size: .25rem;
+    color: #999;
+    text-align: center;
+}
+.songs-lv-three {
+    color: white;
+    background-color: #E80000;
+    border-radius: .15rem;
+    -webkit-border-radius: .15rem;
+    -moz-border-radius: .15rem;
+    line-height: 1.5;
+}
+.songs-lv-runner {background-color: #FF7200;}
+.songs-lv-third {background-color: #F8B300;}
+.songs-lv .am-list-footer {
+    text-align: center;
+    padding: 0;
+    line-height: 2.5;
+    font-size: .32rem;
+}
+
+/* 短列表 */
 html:not([data-scale]) .songsl-list .am-list-body::before {background-color: transparent;}
 .songsl-list .am-list-item {
     padding-left: 0.14rem;

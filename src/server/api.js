@@ -92,8 +92,8 @@ export const getSingerInfo = (params = { singerid: '' }) => {
 };
 
 //根据榜单 id，获取榜单信息
-export const getRankInfo = (rankId = '') => {
-    return request(`/rank/info/${rankId}?json=true`);
+export const getRankInfo = (rankId = '', page = 1) => {
+    return request(`/rank/info/${rankId}?json=true&page=${page}`);
 };
 
 //获取歌曲详细信息
