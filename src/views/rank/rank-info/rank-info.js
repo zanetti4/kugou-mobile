@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Icon } from 'antd-mobile';
+import Cookies from 'js-cookie';
 import RankBanner from './rank-banner';
 import Songs from '../../../components/songs';
 import {getRankInfo, cancelRequest} from '../../../server/api';
@@ -10,45 +11,34 @@ class RankInfo extends Component {
         super(props);
         this.state = {
             banner: '',
-            name: '',
-            list: []
+            name: ''
         };
     }
 
     //根据榜单 id，获取榜单信息
-    getRankInfoById = (page) => {
-        let {match, changeLoading} = this.props;
+    getRankInfoById = () => {
+        let {match, changeLoading, saveTitleName} = this.props;
         let rankId = match.params.id;
 
         if(rankId){
             //rankId 不是空字符串
             changeLoading(true);
 
-            getRankInfo(rankId, page).then(({data}) => {
+            getRankInfo(rankId).then(({data}) => {
                 console.log(data);
 
-                if(page > 1){
-                    //获取下一页数据
-                    let {list} = this.state;
+                let {banner7url, rankname} = data.info;
+                let banner = banner7url.replace('{size}', 400);
 
-                    list.push(...data.data);
+                saveTitleName(rankname);
+                Cookies.set('titleName', rankname);
 
-                    this.setState({list}, () => {
-                        changeLoading(false);
-                    });
-                }else{
-                    //获取第一页数据
-                    let {banner7url, rankname} = data.info;
-                    let banner = banner7url.replace('{size}', 400);
-
-                    this.setState({
-                        banner,
-                        name: rankname,
-                        list: data.data
-                    }, () => {
-                        changeLoading(false);
-                    });
-                }
+                this.setState({
+                    banner,
+                    name: rankname
+                }, () => {
+                    changeLoading(false);
+                });
             });
         }
     }
@@ -62,7 +52,7 @@ class RankInfo extends Component {
     }
 
     render() {
-        let {banner, name, list} = this.state;
+        let {banner, name} = this.state;
         let {isLoading, mainPt} = this.props;
         let loadPt = (document.documentElement.clientHeight - mainPt - 36)/2;
         let loading = <div className="load" style={{paddingTop: `${loadPt}px`}}>
@@ -70,7 +60,7 @@ class RankInfo extends Component {
         </div>;
         let html = <React.Fragment>
             <RankBanner banner={banner} name={name} />
-            <Songs list={list} getRankInfoById={this.getRankInfoById} />
+            <Songs />
         </React.Fragment>;
 
         return isLoading ? loading : html;
@@ -93,6 +83,13 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: 'changeLoading',
                 isLoading
+            });
+        },
+        //保存 titleName
+        saveTitleName(rankName){
+            dispatch({
+                type: 'saveTitleName',
+                titleName: rankName
             });
         }
     };

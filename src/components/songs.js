@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import { ListView, WingBlank, Flex } from 'antd-mobile';
 import classnames from 'classnames';
+import {getRankInfo} from '../server/api';
+
+let pageIndex = 1;
 
 class Songs extends Component {
     constructor(props){
@@ -12,18 +16,24 @@ class Songs extends Component {
         });      
 
         this.state = {
-            dataSource: dataSource.cloneWithRows({}),
-            isLoading: true,
-            page: 1
+            dataSource,
+            isLoading: true
         };
+
+        //存放歌曲
+        this.list = [];
+        this.curList = [];
     }
 
     componentDidMount() {
-        this.changeState(this.props.list);
+        pageIndex = 1;
+        this.getRankListById(this.changeState);
     }
 
-    componentWillReceiveProps(nextProps){
-        this.changeState(nextProps.list);
+    componentWillUnmount(){
+        this.setState = (state,callback)=>{
+            return;
+        };      
     }
 
     //修改 state
@@ -34,15 +44,39 @@ class Songs extends Component {
         });
     }
 
-    //获取下一页内容
-    getNext = () => {
-        let {page} = this.state;
+    //获取歌曲列表
+    getRankListById = (callback, pageIndex) => {
+        let {match} = this.props;
+        let rankId = match.params.id;
 
-        this.setState({
-            page: ++page
-        }, () => {
-            this.setState({isLoading: true});
-            this.props.getRankInfoById(page);
+        if(rankId){
+            //rankId 不是空字符串
+            getRankInfo(rankId, pageIndex).then(({data}) => {
+                this.curList = data.data;
+                this.list.push(...data.data);
+                callback(this.list);
+            });
+        }
+    }
+
+    //无限加载
+    onEndReached = () => {
+        if(this.curList.length < 30){
+            //到最后一页了
+            return;
+        }
+
+        this.setState({isLoading: true});
+        this.getRankListById(this.changeState, ++pageIndex);
+    }
+
+    //开始播放歌曲
+    play = (hash) => {
+        this.props.dispatch({
+            type: 'play',
+            isPlay: true,
+            songList: this.list,
+            hash
         });
     }
 
@@ -53,7 +87,9 @@ class Songs extends Component {
             let num = parseInt(rowID) + 1;
 
             return (
-                <Flex className="songs-lv-row">
+                <Flex className="songs-lv-row" onClick={() => {
+                    this.play(dataRow.hash);
+                }}>
                     <Flex.Item className={classnames({
                         'songs-lv-num': true,
                         'songs-lv-three': num < 4,
@@ -82,7 +118,7 @@ class Songs extends Component {
                 scrollRenderAheadDistance={500} // 当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行
                 scrollEventThrottle={20} // 控制在滚动过程中，scroll事件被调用的频率
                 onEndReachedThreshold={10} // 调用onEndReached之前的临界值，单位是像素
-                // onEndReached={this.getNext} // 上拉加载事件
+                onEndReached={this.onEndReached} // 上拉加载事件
             />
         );      
     }
@@ -94,6 +130,4 @@ class Songs extends Component {
     }
 }
 
-Songs.defaultProps = {list: []}
-Songs.propTypes = {list: PropTypes.array}
-export default Songs;
+export default connect()(withRouter(Songs));
