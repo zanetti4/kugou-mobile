@@ -26,15 +26,15 @@ class PlayerBottom extends Component {
     }
 
     //通过 hash 发请求，获取歌曲信息
-    getSongInfoByHash = (hash, isShowPlayer = false) => {
-        let index = this.props.songList.findIndex(song => song.hash === hash);
+    getSongInfoByHash = (hash, songs, isShowPlayer = false) => {
+        let index = songs.findIndex(song => song.hash === hash);
 
         if(hash){
             //hash 不是空字符串
             getSongInfo(hash).then(({data}) => {
-                let {songList, saveSongName, play} = this.props;
+                let {saveSongName, play} = this.props;
 
-                play(songList);
+                play(songs);
                 saveSongName(data.songName);
 
                 this.setState({
@@ -94,7 +94,7 @@ class PlayerBottom extends Component {
 
         let nextHash = songList[nextIndex].hash;
 
-        this.getSongInfoByHash(nextHash, isShowPlayer);
+        this.getSongInfoByHash(nextHash, songList, isShowPlayer);
     }
 
     //上一首
@@ -115,7 +115,7 @@ class PlayerBottom extends Component {
 
         let prevHash = songList[prevIndex].hash;
 
-        this.getSongInfoByHash(prevHash, isShowPlayer);
+        this.getSongInfoByHash(prevHash, songList, isShowPlayer);
     }
 
     //获取歌曲当前时间
@@ -134,16 +134,16 @@ class PlayerBottom extends Component {
     }
 
     componentDidMount(){
-        let {hash} = this.props;
+        let {hash, songList} = this.props;
 
-        this.getSongInfoByHash(hash);
+        this.getSongInfoByHash(hash, songList);
     }
 
     componentWillReceiveProps(nextProps){
         //点击另一首歌时，执行这里
-        let {hash, isShowPlayer} = nextProps;
+        let {hash, isShowPlayer, songList} = nextProps;
 
-        this.getSongInfoByHash(hash, isShowPlayer);
+        this.getSongInfoByHash(hash, songList, isShowPlayer);
     }
 
     render() {

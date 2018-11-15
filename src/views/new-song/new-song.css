@@ -1,8 +1,8 @@
 .carousel-link {
-    display: inline-block;
-    /* display: block; */
-    /* height: auto; */
+    display: block;
 }
 .carousel-link img {
     max-width: 100%;
+    display: block;
 }
+.carousel .slider-list {touch-action: none;}
