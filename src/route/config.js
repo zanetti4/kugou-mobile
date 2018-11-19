@@ -1,6 +1,7 @@
 import NewSong from '../views/new-song/new-song';
 import Rank from '../views/rank/rank';
 import RankInfo from '../views/rank/rank-info/rank-info';
+import Plist from '../views/plist/plist';
 
 export let topNav = [
     {
@@ -18,6 +19,7 @@ export let topNav = [
     {
         path: '/plist',
         title: '歌单',
+        component: Plist,
         info: {order: 2}
     },
     {

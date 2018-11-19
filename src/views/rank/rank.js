@@ -32,7 +32,7 @@ class Rank extends Component {
         let divs = document.querySelectorAll('.am-list-item');
         //懒加载
         let lazy = () => {
-            for(var i = 0; i < divs.length; i++){
+            for(let i = 0; i < divs.length; i++){
                 let img = divs[i].querySelector('img');
     
                 if(isView(img)){

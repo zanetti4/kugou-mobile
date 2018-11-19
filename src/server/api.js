@@ -72,8 +72,8 @@ export const getRankList = () => {
 };
 
 // 获取歌单数据
-export const getPlist = () => {
-    return request('/plist/index?json=true');
+export const getPlist = (page = 1) => {
+    return request(`/plist/index?json=true&page=${page}`);
 };
 
 // 获取歌手分类数据

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Routes from './route/routes';
 import Head from './components/head/head';
 import PlayerBottom from './components/player/player-bottom';
+import BackTop from './components/back-top';
 import {getStyle} from './assets/js/myFn';
 import 'antd-mobile/dist/antd-mobile.css';
 import './assets/css/kugou.css';
@@ -40,6 +41,7 @@ class App extends Component {
                         <Routes />
                     </div>
                     {isPlay ? <PlayerBottom /> : null}
+                    <BackTop />
                 </React.Fragment>
             </Router>
         );
