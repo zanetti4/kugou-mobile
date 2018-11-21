@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import { ListView, WingBlank, Flex } from 'antd-mobile';
 import classnames from 'classnames';
-import {getRankInfo} from '../server/api';
+import {getRankInfo, getPlistInfo} from '../server/api';
 
 let pageIndex = 1;
 
@@ -27,7 +27,14 @@ class Songs extends Component {
 
     componentDidMount() {
         pageIndex = 1;
-        this.getRankListById(this.changeState);
+
+        if(this.props.match.path === '/rank/list/:id'){
+            //榜单信息页
+            this.getRankListById(this.changeState);
+        }else{
+            //其它长列表
+            this.getSongListById(this.changeState);
+        }
     }
 
     componentWillUnmount(){
@@ -44,7 +51,7 @@ class Songs extends Component {
         });
     }
 
-    //获取歌曲列表
+    //根据榜单 id 获取歌曲列表
     getRankListById = (callback, pageIndex) => {
         let {match} = this.props;
         let rankId = match.params.id;
@@ -52,6 +59,25 @@ class Songs extends Component {
         if(rankId){
             //rankId 不是空字符串
             getRankInfo(rankId, pageIndex).then(({data}) => {
+                this.curList = data.data;
+                this.list.push(...data.data);
+                callback(this.list);
+            });
+        }
+    }
+
+    //根据 id 获取歌曲列表
+    getSongListById = (callback, pageIndex) => {
+        let {match} = this.props;
+        let id = match.params.id;
+
+        if(id){
+            //id 不是空字符串
+            getPlistInfo({
+                plistId: id,
+                page: pageIndex
+            }).then(({data}) => {
+                console.log(data);
                 this.curList = data.data;
                 this.list.push(...data.data);
                 callback(this.list);
@@ -67,7 +93,14 @@ class Songs extends Component {
         }
 
         this.setState({isLoading: true});
-        this.getRankListById(this.changeState, ++pageIndex);
+
+        if(this.props.match.path === '/rank/list/:id'){
+            //榜单信息页
+            this.getRankListById(this.changeState, ++pageIndex);
+        }else{
+            //其它长列表
+            this.getSongListById(this.changeState, ++pageIndex);
+        }
     }
 
     //开始播放歌曲
@@ -82,20 +115,23 @@ class Songs extends Component {
 
     //渲染列表
     renderList(){
+        //只有榜单信息页才显示序号
+        let isShowNum = this.props.match.path === '/rank/list/:id' ? true : false;
         //一行的结构
         const row = (dataRow, sectionID, rowID) => {
             let num = parseInt(rowID) + 1;
+            let htmlNum = <Flex.Item className={classnames({
+                'songs-lv-num': true,
+                'songs-lv-three': num < 4,
+                'songs-lv-runner': num === 2,
+                'songs-lv-third': num === 3
+            })}>{num}</Flex.Item>;
 
             return (
                 <Flex className="songs-lv-row" onClick={() => {
                     this.play(dataRow.hash);
                 }}>
-                    <Flex.Item className={classnames({
-                        'songs-lv-num': true,
-                        'songs-lv-three': num < 4,
-                        'songs-lv-runner': num === 2,
-                        'songs-lv-third': num === 3
-                    })}>{num}</Flex.Item>
+                    {isShowNum ? htmlNum : null}
                     <Flex.Item className="songs-lv-name">{dataRow.filename}</Flex.Item>
                 </Flex>
             );

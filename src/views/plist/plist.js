@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ListView, WingBlank, Flex, Icon } from 'antd-mobile';
+import {withRouter} from 'react-router-dom';
 import {getPlist} from '../../server/api';
 import {isView} from '../../assets/js/myFn';
 import './plist.css';
@@ -22,6 +23,13 @@ class Plist extends Component {
         //存放歌单
         this.list = [];
         this.curList = [];
+        this.imgsUrl = [];
+    }
+
+    componentWillMount(){
+        window.addEventListener('scroll', () => {
+            this.lazy(this.imgsUrl);
+        });
     }
 
     componentDidMount() {
@@ -30,10 +38,38 @@ class Plist extends Component {
     }
 
     componentWillUnmount(){
+        let that = this;
+
+        window.removeEventListener('scroll', that.lazy);
+
         this.setState = (state,callback)=>{
             return;
         };      
     }
+
+    //懒加载
+    lazy = (aImgs) => {
+        //只循环当前页的歌单，只有第一页是35条，以后都是30条。
+        let start = 0;
+
+        if(pageIndex > 1){
+            //当前不是第一页
+            start = 35 + (pageIndex - 2) * 30;
+        }
+        //每次都获取最新的歌单列表
+        let divs = document.querySelectorAll('.am-flexbox.plist-row');
+
+        for(let i = start; i < divs.length; i++){
+            let img = divs[i].querySelector('img');
+
+            if(isView(img)){
+                //该图片在可视区
+                img.src = aImgs[i - start];
+            }
+        };
+
+        console.log(4444)
+    };
 
     //修改 state
     changeState = (list) => {
@@ -41,44 +77,18 @@ class Plist extends Component {
             dataSource: this.state.dataSource.cloneWithRows(list),
             isLoading: false
         }, () => {
-            let imgsUrl = this.curList.map(special => {
+            this.imgsUrl = this.curList.map(special => {
                 return special.imgurl.replace('{size}', 400);
             });
 
-            //懒加载
-            let lazy = () => {
-                //只循环当前页的歌单，只有第一页是35条，以后都是30条。
-                let start = 0;
-
-                if(pageIndex > 1){
-                    //当前不是第一页
-                    start = 35 + (pageIndex - 2) * 30;
-                }
-                //每次都获取最新的歌单列表
-                let divs = document.querySelectorAll('.am-flexbox');
-
-                for(let i = start; i < divs.length; i++){
-                    let img = divs[i].querySelector('img');
-        
-                    if(isView(img)){
-                        //该图片在可视区
-                        img.src = imgsUrl[i - start];
-                    }
-                };
-            };
-
-            lazy();
-
-            window.onscroll = () => {
-                lazy();
-            };
+            this.lazy(this.imgsUrl);
         });
     }
 
     //获取歌单列表
     getPlistData = (callback, pageIndex) => {
         getPlist(pageIndex).then(({data}) => {
-            console.log(data.data);
+            // console.log(data.data);
             this.curList = data.data;
             this.list.push(...data.data);
             callback(this.list);
@@ -96,12 +106,19 @@ class Plist extends Component {
         this.getPlistData(this.changeState, ++pageIndex);
     }
 
+    //跳转至歌单信息页
+    toPlistInfo = (plistId) => {
+        this.props.history.push(`/plist/list/${plistId}`);
+    }
+
     //渲染列表
     renderList(){
         //一行的结构
         const row = (dataRow, sectionID, rowID) => {
             return (
-                <Flex>
+                <Flex className="plist-row" onClick={() => {
+                    this.toPlistInfo(dataRow.specialid);
+                }}>
                     <Flex.Item className="plist-left">
                         <img src="http://m.kugou.com/static/images/share2014/default.png" alt={dataRow.specialname} />
                     </Flex.Item>
@@ -147,4 +164,4 @@ class Plist extends Component {
     }
 }
 
-export default Plist;
+export default withRouter(Plist);

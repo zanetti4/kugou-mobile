@@ -2,6 +2,7 @@ import NewSong from '../views/new-song/new-song';
 import Rank from '../views/rank/rank';
 import RankInfo from '../views/rank/rank-info/rank-info';
 import Plist from '../views/plist/plist';
+import PlistInfo from '../views/plist/plist-info/plist-info';
 
 export let topNav = [
     {
@@ -38,11 +39,12 @@ export let second = [
     {
         path: '/rank/list/:id',
         title: '榜单信息',
-        component: RankInfo,
+        component: RankInfo
     },
     {
         path: '/plist/list/:id',
-        title: '歌单信息'
+        title: '歌单信息',
+        component: PlistInfo
     },
     {
         path: '/singer/list/:id',

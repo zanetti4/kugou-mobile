@@ -1,42 +1,43 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { Icon } from 'antd-mobile';
 import Cookies from 'js-cookie';
-import RankBanner from './rank-banner';
+import { Icon } from 'antd-mobile';
+import Intro from './intro';
 import Songs from '../../../components/songs';
-import {getRankInfo, cancelRequest} from '../../../server/api';
+import {getPlistInfo} from '../../../server/api';
+import './plist-info.css';
 
-class RankInfo extends Component {
+class PlistInfo extends Component {
     constructor(props){
         super(props);
         
         this.state = {
             banner: '',
-            name: ''
+            name: '',
+            intro: ''
         };
     }
 
-    //根据榜单 id，获取榜单信息
-    getRankInfoById = () => {
+    //根据歌单 id，获取歌单信息
+    getPlistInfoById = () => {
         let {match, changeLoading, saveTitleName} = this.props;
-        let rankId = match.params.id;
+        let plistId = match.params.id;
 
-        if(rankId){
-            //rankId 不是空字符串
+        if(plistId){
+            //plistId 不是空字符串
             changeLoading(true);
 
-            getRankInfo(rankId).then(({data}) => {
-                console.log(data);
+            getPlistInfo({plistId}).then(({data}) => {
+                let {imgurl, specialname, intro} = data.info;
+                let banner = imgurl.replace('{size}', 400);
 
-                let {banner7url, rankname} = data.info;
-                let banner = banner7url.replace('{size}', 400);
-
-                saveTitleName(rankname);
-                Cookies.set('titleName', rankname);
+                saveTitleName(specialname);
+                Cookies.set('titleName', specialname);
 
                 this.setState({
                     banner,
-                    name: rankname
+                    name: specialname,
+                    intro
                 }, () => {
                     changeLoading(false);
                 });
@@ -45,22 +46,27 @@ class RankInfo extends Component {
     }
 
     componentDidMount(){
-        this.getRankInfoById();
+        this.getPlistInfoById();
     }
 
     componentWillUnmount(){
-        cancelRequest();
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
-    render() {
-        let {banner, name} = this.state;
+    render(){
+        let {banner, name, intro} = this.state;
         let {isLoading, mainPt} = this.props;
         let loadPt = (document.documentElement.clientHeight - mainPt - 36)/2;
         let loading = <div className="load" style={{paddingTop: `${loadPt}px`}}>
             <Icon type="loading" size="lg" />
         </div>;
         let html = <React.Fragment>
-            <RankBanner banner={banner} name={name} />
+            <div className="plisti-banner">
+                <img src={banner} alt={name} />
+            </div>
+            <Intro intro={intro} />
             <Songs />
         </React.Fragment>;
 
@@ -87,13 +93,13 @@ function mapDispatchToProps(dispatch){
             });
         },
         //保存 titleName
-        saveTitleName(rankName){
+        saveTitleName(plistName){
             dispatch({
                 type: 'saveTitleName',
-                titleName: rankName
+                titleName: plistName
             });
         }
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RankInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PlistInfo);

@@ -15,11 +15,19 @@ let instance = axios.create({
             data = JSON.parse(data);
         }
 
+        // console.log(data);
+
         let o = {};
 
-        if(data.list){
+        /* if(data.list){
             o.data = data.list;
             o.origin = 'singer';
+        } */
+        if(data.__Tpl === 'plist/list.html'){
+            //歌单信息页
+            o.data = data.list.list.info;
+            o.info = data.info.list;
+            o.origin = 'plist-info';
         } else if (data.banner) {
             o.data = data.data;
             o.banner = data.banner
@@ -44,7 +52,7 @@ let instance = axios.create({
 });
 
 let requestMp3 = axios.create({baseURL: baseUrl});
-
+//发送 get 请求
 let request = (path) => {
     return instance(path).catch(error => {
         if (error.response) {
@@ -96,6 +104,14 @@ export const getRankInfo = (rankId = '', page = 1) => {
     return request(`/rank/info/${rankId}?json=true&page=${page}`);
 };
 
+//根据歌单 id，获取歌单信息
+export const getPlistInfo = (params = {
+    plistId: '', 
+    page: 1
+}) => {
+    return request(`/plist/list/${params.plistId}?json=true&page=${params.page}`);
+};
+
 //获取歌曲详细信息
 export const getSongInfo = (hash = '') => {
     return requestMp3('/app/i/getSongInfo.php', {
@@ -141,5 +157,6 @@ export default {
     getSongInfo,
     getLyric,
     getRankInfo,
+    getPlistInfo,
     cancelRequest
 };

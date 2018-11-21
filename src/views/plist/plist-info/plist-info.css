@@ -1,0 +1,24 @@
+.plisti-banner {
+    margin-top: -1.7rem;
+    overflow: hidden;
+    height: 5.8rem;
+}
+.plisti-banner img {max-width: 100%;}
+.intro {
+    padding: .12rem .25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .06);
+}
+.intro .intro-words.am-flexbox-item {
+    flex: 12 1;
+    font-size: .32rem;
+    line-height: 1.7;
+    /* height: 1.7em; */
+    overflow: hidden;
+}
+.intro .intro-right.am-flexbox-item {padding-top: .08rem;}
+.intro-arrow {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border: solid 1px #BBB;
+}
