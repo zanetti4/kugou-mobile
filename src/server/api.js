@@ -19,10 +19,6 @@ let instance = axios.create({
 
         let o = {};
 
-        /* if(data.list){
-            o.data = data.list;
-            o.origin = 'singer';
-        } */
         if(data.__Tpl === 'plist/list.html'){
             //歌单信息页
             o.data = data.list.list.info;
@@ -39,12 +35,19 @@ let instance = axios.create({
             o.data = data.plist.list.info;
             o.origin = 'plist'
         } else if (data.singers) {
+            //歌手列表
             o.data = data.singers.list.info;
-            o.origin = 'singers-list'
+            o.total = data.singers.total;
+            o.classname = data.classname;
+            o.origin = 'singers-list';
         } else if (data.songs) {
             o.data = data.songs.list;
             o.info = data.info;
             o.origin = 'singers-info'
+        } else if(data.__Tpl === 'singer/class.html'){
+            //歌手
+            o.data = data.list;
+            o.origin = 'singer';
         }
 
         return o;
@@ -90,8 +93,11 @@ export const getSingers = () => {
 };
 
 // 根据歌手分类id，获取歌手分类歌手
-export const getSingerList = (params = { classid: '' }) => {
-    return request(`/singer/list/${params.classid}?json=true`);
+export const getSingerList = (params = { 
+    classid: '',
+    page: 1
+ }) => {
+    return request(`/singer/list/${params.classid}?json=true&page=${params.page}`);
 };
 
 // 根据歌手id，获取歌手歌曲

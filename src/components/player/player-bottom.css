@@ -31,6 +31,7 @@
     border-radius: .1rem;
     -moz-border-radius: .1rem;
     -webkit-border-radius: .1rem;
+    color: #888;
 }
 .playerb-right-load {
     animation: load 2s infinite;

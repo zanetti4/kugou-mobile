@@ -1,0 +1,13 @@
+html:not([data-scale]) .singer-hot .am-list-body::before, html:not([data-scale]) .singer-hot .am-list-body::after {background-color: transparent;}
+.singer-hot {
+    border: solid 1px #E4E4E4;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #FBFBFB;
+    margin-bottom: .34rem;
+}
+.singer-hot .am-list-body, .singer-hot .am-list-body .singer-hot-row {background-color: transparent;}
+.singer-hot-row.am-list-item .am-list-line .am-list-content {color: #333;}
+.singer-hot .am-list-body .singer-hot-row {padding-left: 0;}
+.singer-hot-row .am-list-line {padding-left: 15px;}

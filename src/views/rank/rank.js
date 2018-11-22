@@ -9,6 +9,16 @@ import './rank.css';
 const Item = List.Item;
 
 class Rank extends Component {
+    constructor(props){
+        super(props);
+        this.divs = [];
+        this.imgsUrl = [];
+
+        this.fnScroll = () => {
+            this.lazy(this.divs, this.imgsUrl);
+        };
+    }
+
     //进入榜单信息页
     toRankInfo = (rankId, rankName) => {
         let {history, dispatch} = this.props;
@@ -22,31 +32,37 @@ class Rank extends Component {
         history.push(`/rank/list/${rankId}`);
     }
 
+    //懒加载
+    lazy = (divs, imgsUrl) => {
+        for(let i = 0; i < divs.length; i++){
+            let img = divs[i].querySelector('img');
+
+            if(isView(img)){
+                //该图片在可视区
+                img.src = imgsUrl[i];
+            }
+        };
+    };
+
     componentDidMount(){
         let {data} = this.props.data;
 
-        let imgsUrl = data.map(rank => {
+        this.imgsUrl = data.map(rank => {
             return rank.imgurl.replace('{size}', 400);
         });
 
-        let divs = document.querySelectorAll('.am-list-item');
-        //懒加载
-        let lazy = () => {
-            for(let i = 0; i < divs.length; i++){
-                let img = divs[i].querySelector('img');
-    
-                if(isView(img)){
-                    //该图片在可视区
-                    img.src = imgsUrl[i];
-                }
-            };
-        };
+        this.divs = document.querySelectorAll('.am-list-item');
+        this.lazy(this.divs, this.imgsUrl);
 
-        lazy();
+        let that = this;
 
-        window.onscroll = () => {
-            lazy();
-        };
+        window.addEventListener('scroll', that.fnScroll);
+    }
+
+    componentWillUnmount(){
+        let that = this;
+
+        window.removeEventListener('scroll', that.fnScroll);
     }
 
     render() {

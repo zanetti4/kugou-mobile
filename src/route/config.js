@@ -3,6 +3,8 @@ import Rank from '../views/rank/rank';
 import RankInfo from '../views/rank/rank-info/rank-info';
 import Plist from '../views/plist/plist';
 import PlistInfo from '../views/plist/plist-info/plist-info';
+import Singer from '../views/singer/singer';
+import SingerList from '../views/singer/singer-list/singer-list';
 
 export let topNav = [
     {
@@ -26,6 +28,7 @@ export let topNav = [
     {
         path: '/singer',
         title: '歌手',
+        component: Singer,
         info: {order: 3}
     }
 ];
@@ -48,7 +51,8 @@ export let second = [
     },
     {
         path: '/singer/list/:id',
-        title: '歌手列表'
+        title: '歌手列表',
+        component: SingerList
     },
     {
         path: '/singer/info/:id',

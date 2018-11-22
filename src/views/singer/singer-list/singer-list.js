@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import { ListView, WingBlank, Flex, Icon } from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
-import {getPlist} from '../../server/api';
-import {isView} from '../../assets/js/myFn';
-import './plist.css';
+import Cookies from 'js-cookie';
+import {getSingerList} from '../../../server/api';
+import {isView} from '../../../assets/js/myFn';
+import './singer-list.css';
 
 let pageIndex = 1;
 
-class Plist extends Component {
+class SingerList extends Component {
     constructor(props){
         super(props);
 
@@ -20,7 +22,7 @@ class Plist extends Component {
             isLoading: true
         };
 
-        //存放歌单
+        //存放歌手
         this.list = [];
         this.curList = [];
         this.imgsUrl = [];
@@ -28,6 +30,8 @@ class Plist extends Component {
         this.fnScroll = () => {
             this.lazy(this.imgsUrl);
         };
+
+        this.total = null;
     }
 
     componentWillMount(){
@@ -38,7 +42,7 @@ class Plist extends Component {
 
     componentDidMount() {
         pageIndex = 1;
-        this.getPlistData(this.changeState);
+        this.getSingerListData(this.changeState);
     }
 
     componentWillUnmount(){
@@ -53,15 +57,11 @@ class Plist extends Component {
 
     //懒加载
     lazy = (aImgs) => {
-        //只循环当前页的歌单，只有第一页是35条，以后都是30条。
-        let start = 0;
+        //只循环当前页的歌手，每页30条。
+        let start = (pageIndex - 1) * 30;
 
-        if(pageIndex > 1){
-            //当前不是第一页
-            start = 35 + (pageIndex - 2) * 30;
-        }
         //每次都获取最新的歌单列表
-        let divs = document.querySelectorAll('.am-flexbox.plist-row');
+        let divs = document.querySelectorAll('.am-flexbox');
 
         for(let i = start; i < divs.length; i++){
             let img = divs[i].querySelector('img');
@@ -79,22 +79,39 @@ class Plist extends Component {
             dataSource: this.state.dataSource.cloneWithRows(list),
             isLoading: false
         }, () => {
-            this.imgsUrl = this.curList.map(special => {
-                return special.imgurl.replace('{size}', 400);
+            this.imgsUrl = this.curList.map(singer => {
+                return singer.imgurl.replace('{size}', 400);
             });
 
             this.lazy(this.imgsUrl);
         });
     }
 
-    //获取歌单列表
-    getPlistData = (callback, pageIndex) => {
-        getPlist(pageIndex).then(({data}) => {
-            // console.log(data.data);
-            this.curList = data.data;
-            this.list.push(...data.data);
-            callback(this.list);
-        });
+    //获取歌手列表
+    getSingerListData = (callback, pageIndex) => {
+        let {match, dispatch} = this.props;
+        let classid = match.params.id;
+
+        if(classid){
+            //classid 不是空字符串
+            getSingerList({
+                classid,
+                page: pageIndex
+            }).then(({data}) => {
+                console.log(data);
+                this.total = data.total;
+                this.curList = data.data;
+                this.list.push(...data.data);
+
+                dispatch({
+                    type: 'saveTitleName',
+                    titleName: data.classname
+                });
+
+                Cookies.set('titleName', data.classname);
+                callback(this.list);
+            });
+        }
     }
 
     //无限加载
@@ -105,7 +122,7 @@ class Plist extends Component {
         }
 
         this.setState({isLoading: true});
-        this.getPlistData(this.changeState, ++pageIndex);
+        this.getSingerListData(this.changeState, ++pageIndex);
     }
 
     //跳转至歌单信息页
@@ -118,18 +135,13 @@ class Plist extends Component {
         //一行的结构
         const row = (dataRow, sectionID, rowID) => {
             return (
-                <Flex className="plist-row" onClick={() => {
+                <Flex className="singerl-row" onClick={() => {
                     this.toPlistInfo(dataRow.specialid);
                 }}>
-                    <Flex.Item className="plist-left">
-                        <img src="http://m.kugou.com/static/images/share2014/default.png" alt={dataRow.specialname} />
+                    <Flex.Item className="singerl-left">
+                        <img src="http://m.kugou.com/static/images/share2014/default.png" alt={dataRow.singername} />
                     </Flex.Item>
-                    <Flex.Item className="plist-cen">
-                        {dataRow.specialname}
-                        <div>
-                            <i className="iconfont">&#xe869;</i> {dataRow.playcount}
-                        </div>
-                    </Flex.Item>
+                    <Flex.Item className="singerl-cen">{dataRow.singername}</Flex.Item>
                     <Flex.Item>
                         <Icon type="right" color="#DDD" />
                     </Flex.Item>
@@ -143,9 +155,11 @@ class Plist extends Component {
             return isLoading ? '加载中……' : '木有了……';
         };
 
+        let hasInfiniteLoad = this.total ? null : this.onEndReached;
+
         return (
             <ListView
-                className="plist"
+                className="singerl"
                 dataSource={dataSource} // 渲染的数据源
                 renderFooter={foot}
                 renderRow={row} // 单条数据
@@ -154,7 +168,7 @@ class Plist extends Component {
                 scrollRenderAheadDistance={500} // 当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行
                 scrollEventThrottle={20} // 控制在滚动过程中，scroll事件被调用的频率
                 onEndReachedThreshold={10} // 调用onEndReached之前的临界值，单位是像素
-                onEndReached={this.onEndReached} // 上拉加载事件
+                onEndReached={hasInfiniteLoad} // 上拉加载事件
             />
         );      
     }
@@ -166,4 +180,4 @@ class Plist extends Component {
     }
 }
 
-export default withRouter(Plist);
+export default connect()(withRouter(SingerList));

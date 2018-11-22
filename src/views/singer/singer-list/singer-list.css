@@ -1,0 +1,29 @@
+html:not([data-scale]) .singerl .am-list-body::before, html:not([data-scale]) .singerl .am-list-body::after {background-color: transparent;}
+.singerl .am-flexbox {
+    padding: 0 0 .2rem .14rem;
+    border-bottom: solid 1px #DDD;
+    margin-bottom: .2rem;
+}
+.singerl .am-flexbox:last-child {margin-bottom: 0;}
+.singerl .am-flexbox .singerl-left {flex: 2 1;}
+.singerl .am-flexbox .singerl-cen {
+    flex: 8 1;
+    font-size: .34rem;
+    line-height: 1.5;
+}
+.singerl-cen div {
+    color: #9B9B9B;
+    font-size: .27rem;
+    margin-top: .05rem;
+}
+.singerl-cen div i {font-size: .27rem;}
+.singerl-left img {
+    width: 100%;
+    height: auto;
+}
+.singerl .am-list-footer {
+    text-align: center;
+    padding: 0;
+    line-height: 2.5;
+    font-size: .32rem;
+}

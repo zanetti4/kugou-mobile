@@ -8,9 +8,9 @@ const Item = List.Item;
 class SongsList extends Component {
     //开始播放歌曲
     play = (hash) => {
-        let {list} = this.props;
+        let {list, dispatch} = this.props;
 
-        this.props.dispatch({
+        dispatch({
             type: 'play',
             isPlay: true,
             songList: list,
