@@ -19,10 +19,21 @@ class PlayerBottom extends Component {
             prevLoad: false, //载入上一首歌
             nextLoad: false, //载入下一首歌
             currentTime: 0, //当前播放时间
-            lyric: '' //歌词
+            lyric: null, //歌词
+            fullSongName: '' //全歌名
         };
 
         this.audio = React.createRef();
+    }
+
+    //处理歌名
+    dealSongName = () => {
+        let {songInfo} = this.state;
+        let {saveSongName} = this.props;
+        let fullSongName = songInfo.fileName.split(' - ')[1];
+
+        this.setState({fullSongName});
+        saveSongName(fullSongName);
     }
 
     //通过 hash 发请求，获取歌曲信息
@@ -32,22 +43,29 @@ class PlayerBottom extends Component {
         if(hash){
             //hash 不是空字符串
             getSongInfo(hash).then(({data}) => {
-                let {saveSongName, play} = this.props;
-
-                play(songs);
-                saveSongName(data.songName);
-
                 this.setState({
                     isPlaying: true,
                     songInfo: data,
                     index,
                     prevLoad: false,
                     nextLoad: false
+                }, () => {
+                    this.dealSongName();
+
+                    let {fileName, timeLength} = this.state.songInfo;
+
+                    getLyric({
+                        hash,
+                        keyword: fileName,
+                        timelength: timeLength*1000
+                    }).then(({data}) => {
+                        this.setState({lyric: data});
+                    });
                 });
             });
         }
 
-        if(isShowPlayer){
+        /* if(isShowPlayer){
             //显示大播放器
             let {fileName, timeLength} = this.state.songInfo;
 
@@ -58,7 +76,7 @@ class PlayerBottom extends Component {
             }).then(({data}) => {
                 this.setState({lyric: data});
             });
-        }
+        } */
     }
 
     //暂停、播放
@@ -147,8 +165,8 @@ class PlayerBottom extends Component {
     }
 
     render() {
-        let {isShowPlayer, showPlayer} = this.props;
-        let {songInfo, isPlaying, prevLoad, nextLoad, currentTime, lyric} = this.state;
+        let {isShowPlayer, showPlayer, songList, play, isPlay} = this.props;
+        let {songInfo, isPlaying, prevLoad, nextLoad, currentTime, lyric, fullSongName} = this.state;
 
         //处理图片
         let dealImg = () => {
@@ -170,22 +188,24 @@ class PlayerBottom extends Component {
             return nextLoad ? <span>&#xe788;</span> : <span>&#xe7eb;</span>;
         };
         
-        let showPlayerLyric = isShowPlayer && lyric;
-        let isShowPlayerBot = this.state.songInfo.hash
+        let showPlayerLyric = isShowPlayer && lyric !== null;
+        let isShowPlayerBot = songInfo.hash
         ? <React.Fragment>
             <div className="playerb">
                 <audio src={songInfo.url} autoPlay ref={this.audio} onEnded={this.nextSong} onTimeUpdate={this.getCurTime}></audio>
                 <Flex>
                     <Flex.Item onClick={() => {
                         showPlayer();
+                        play(songList, isPlay);
                     }}>
                         <img alt={songInfo.singerName} className="block-pic playerb-avatar" src={dealImg()} />
                     </Flex.Item>
                     <Flex.Item className="playerb-2 playerb-center" onClick={() => {
                         showPlayer();
+                        play(songList, isPlay);
                     }}>
-                        <div>{songInfo.songName}</div>
-                        {songInfo.singerName}
+                        <div>{fullSongName}</div>
+                        {songInfo.choricSinger}
                     </Flex.Item>
                     <Flex.Item className="playerb-2 playerb-right">
                         <i className={classnames({
@@ -224,7 +244,8 @@ function mapStateToProps(state){
     return {
         hash: state.hash,
         songList: state.songList,
-        isShowPlayer: state.isShowPlayer
+        isShowPlayer: state.isShowPlayer,
+        isPlay: state.isPlay
     };
 };
 
@@ -246,10 +267,10 @@ function mapDispatchToProps(dispatch){
             });
         },
         //把 redux 中的 hash 清掉，否则再点击首次播放的歌曲时，props 没有改变就不执行 componentWillReceiveProps
-        play(songList){
+        play(songList, isPlay){
             dispatch({
                 type: 'play',
-                isPlay: true,
+                isPlay,
                 hash: '',
                 songList
             });

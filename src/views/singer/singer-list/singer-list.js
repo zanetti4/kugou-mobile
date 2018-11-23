@@ -61,7 +61,7 @@ class SingerList extends Component {
         let start = (pageIndex - 1) * 30;
 
         //每次都获取最新的歌单列表
-        let divs = document.querySelectorAll('.am-flexbox');
+        let divs = document.querySelectorAll('.singerl-row');
 
         for(let i = start; i < divs.length; i++){
             let img = divs[i].querySelector('img');
@@ -98,7 +98,7 @@ class SingerList extends Component {
                 classid,
                 page: pageIndex
             }).then(({data}) => {
-                console.log(data);
+                // console.log(data);
                 this.total = data.total;
                 this.curList = data.data;
                 this.list.push(...data.data);
@@ -125,9 +125,9 @@ class SingerList extends Component {
         this.getSingerListData(this.changeState, ++pageIndex);
     }
 
-    //跳转至歌单信息页
-    toPlistInfo = (plistId) => {
-        this.props.history.push(`/plist/list/${plistId}`);
+    //跳转至歌手信息页
+    toSingerInfo = (singerId) => {
+        this.props.history.push(`/singer/info/${singerId}`);
     }
 
     //渲染列表
@@ -136,7 +136,7 @@ class SingerList extends Component {
         const row = (dataRow, sectionID, rowID) => {
             return (
                 <Flex className="singerl-row" onClick={() => {
-                    this.toPlistInfo(dataRow.specialid);
+                    this.toSingerInfo(dataRow.singerid);
                 }}>
                     <Flex.Item className="singerl-left">
                         <img src="http://m.kugou.com/static/images/share2014/default.png" alt={dataRow.singername} />

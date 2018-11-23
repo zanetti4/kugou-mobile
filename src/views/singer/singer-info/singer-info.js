@@ -4,10 +4,10 @@ import Cookies from 'js-cookie';
 import { Icon } from 'antd-mobile';
 import Intro from '../../../components/intro';
 import Songs from '../../../components/songs';
-import {getPlistInfo} from '../../../server/api';
-import './plist-info.css';
+import {getSingerInfo} from '../../../server/api';
+// import './plist-info.css';
 
-class PlistInfo extends Component {
+class SingerInfo extends Component {
     constructor(props){
         super(props);
         
@@ -18,25 +18,26 @@ class PlistInfo extends Component {
         };
     }
 
-    //根据歌单 id，获取歌单信息
-    getPlistInfoById = () => {
+    //根据歌手 id，获取歌手信息
+    getSingerInfoById = () => {
         let {match, changeLoading, saveTitleName} = this.props;
-        let plistId = match.params.id;
+        let singerId = match.params.id;
 
-        if(plistId){
-            //plistId 不是空字符串
+        if(singerId){
+            //singerId 不是空字符串
             changeLoading(true);
 
-            getPlistInfo({plistId}).then(({data}) => {
-                let {imgurl, specialname, intro} = data.info;
+            getSingerInfo({singerId}).then(({data}) => {
+                // console.log(data);
+                let {imgurl, singername, intro} = data.info;
                 let banner = imgurl.replace('{size}', 400);
 
-                saveTitleName(specialname);
-                Cookies.set('titleName', specialname);
+                saveTitleName(singername);
+                Cookies.set('titleName', singername);
 
                 this.setState({
                     banner,
-                    name: specialname,
+                    name: singername,
                     intro
                 }, () => {
                     changeLoading(false);
@@ -46,7 +47,7 @@ class PlistInfo extends Component {
     }
 
     componentDidMount(){
-        this.getPlistInfoById();
+        this.getSingerInfoById();
     }
 
     componentWillUnmount(){
@@ -93,13 +94,13 @@ function mapDispatchToProps(dispatch){
             });
         },
         //保存 titleName
-        saveTitleName(plistName){
+        saveTitleName(singerName){
             dispatch({
                 type: 'saveTitleName',
-                titleName: plistName
+                titleName: singerName
             });
         }
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlistInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(SingerInfo);

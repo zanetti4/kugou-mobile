@@ -25,6 +25,12 @@
     width: 3.5rem;
     margin: 0 auto .4rem;
 }
+.big-mask-nol {
+    color: white;
+    text-align: center;
+    margin-bottom: .4rem;
+    font-size: .32rem;
+}
 .controller {
     color: #DDD;
     padding: 0 .3rem;

@@ -8,11 +8,11 @@ const Item = List.Item;
 class SongsList extends Component {
     //开始播放歌曲
     play = (hash) => {
-        let {list, dispatch} = this.props;
+        let {list, dispatch, isPlay} = this.props;
 
         dispatch({
             type: 'play',
-            isPlay: true,
+            isPlay: ++isPlay,
             songList: list,
             hash
         });
@@ -20,6 +20,7 @@ class SongsList extends Component {
 
     render() {
         let {list} = this.props;
+        // console.log(list);
 
         let items = list.map(song => {
             return <Item key={song.hash} onClick={() => {
@@ -45,4 +46,11 @@ SongsList.propTypes = {
     list: PropTypes.array
 }
 
-export default connect()(SongsList);
+//从 redux 获取是否需要播放歌曲
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay
+    };
+};
+
+export default connect(mapStateToProps)(SongsList);

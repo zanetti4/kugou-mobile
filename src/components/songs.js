@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import { ListView, WingBlank, Flex } from 'antd-mobile';
 import classnames from 'classnames';
-import {getRankInfo, getPlistInfo} from '../server/api';
+import {getRankInfo, getPlistInfo, getSingerInfo} from '../server/api';
 
 let pageIndex = 1;
 
@@ -73,12 +73,25 @@ class Songs extends Component {
 
         if(id){
             //id 不是空字符串
-            getPlistInfo({
-                plistId: id,
-                page: pageIndex
-            }).then(({data}) => {
-                console.log(data);
+            let promise = {};
+
+            if(match.path === '/plist/list/:id'){
+                //歌单信息页
+                promise = getPlistInfo({
+                    plistId: id,
+                    page: pageIndex
+                });
+            }else if(match.path === '/singer/info/:id'){
+                //歌手信息页
+                promise = getSingerInfo({
+                    singerId: id,
+                    page: pageIndex
+                });
+            }
+
+            promise.then(({data}) => {
                 this.curList = data.data;
+                console.log(data.data)
                 this.list.push(...data.data);
                 callback(this.list);
             });
@@ -105,9 +118,11 @@ class Songs extends Component {
 
     //开始播放歌曲
     play = (hash) => {
-        this.props.dispatch({
+        let {dispatch, isPlay} = this.props;
+
+        dispatch({
             type: 'play',
-            isPlay: true,
+            isPlay: ++isPlay,
             songList: this.list,
             hash
         });
@@ -166,4 +181,11 @@ class Songs extends Component {
     }
 }
 
-export default connect()(withRouter(Songs));
+//从 redux 获取是否需要播放歌曲
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(Songs));

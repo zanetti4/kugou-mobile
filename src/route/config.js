@@ -5,6 +5,7 @@ import Plist from '../views/plist/plist';
 import PlistInfo from '../views/plist/plist-info/plist-info';
 import Singer from '../views/singer/singer';
 import SingerList from '../views/singer/singer-list/singer-list';
+import SingerInfo from '../views/singer/singer-info/singer-info';
 
 export let topNav = [
     {
@@ -56,7 +57,8 @@ export let second = [
     },
     {
         path: '/singer/info/:id',
-        title: '歌手信息'
+        title: '歌手信息',
+        component: SingerInfo
     }
 ];
 

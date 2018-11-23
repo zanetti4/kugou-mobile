@@ -100,9 +100,12 @@ export const getSingerList = (params = {
     return request(`/singer/list/${params.classid}?json=true&page=${params.page}`);
 };
 
-// 根据歌手id，获取歌手歌曲
-export const getSingerInfo = (params = { singerid: '' }) => {
-    return request(`/singer/info/${params.singerid}?json=true`);
+// 根据歌手id，获取歌手信息
+export const getSingerInfo = (params = { 
+    singerId: '',
+    page: 1
+}) => {
+    return request(`/singer/info/${params.singerId}?json=true&page=${params.page}`);
 };
 
 //根据榜单 id，获取榜单信息

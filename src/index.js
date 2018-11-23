@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 
 let data = {
     mainPt: 0,
-    isPlay: false,
+    isPlay: 0,
     hash: '',
     songList: [],
     isShowPlayer: false,

@@ -49,11 +49,11 @@ class App extends Component {
 }
 
 App.defaultProps = {
-    isPlay: false
+    isPlay: 0
 }
 
 App.propTypes = {
-    isPlay: PropTypes.bool
+    isPlay: PropTypes.number
 }
 
 //从 redux 获取是否需要播放歌曲

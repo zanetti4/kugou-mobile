@@ -78,13 +78,15 @@ html:not([data-scale]) .songs-lv .am-list-body::after {background-color: transpa
 }
 
 /* 短列表 */
-html:not([data-scale]) .songsl-list .am-list-body::before {background-color: transparent;}
+html:not([data-scale]) .songsl-list .am-list-body::before, html:not([data-scale]) .songsl-list .am-list-body::after {background-color: transparent;}
 .songsl-list .am-list-item {
     padding-left: 0.14rem;
-    border-top: solid 1px #DDD;
+    border-bottom: solid 1px #DDD;
 }
 .songsl-list .am-list-item:first-child {border-top: none;}
+.songsl-list .am-list-item:last-child {border-bottom: solid 1px #DDD;}
 .songsl-list .am-list-item .am-list-line {padding-right: 0;}
+html:not([data-scale]) .songsl-list .am-list-body div:not(:last-child) .am-list-line::after {background-color: transparent;}
 .songsl-list .am-list-item .am-list-line .am-list-content {
     font-size: .32rem;
     color: #333;
