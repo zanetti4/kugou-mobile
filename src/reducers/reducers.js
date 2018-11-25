@@ -44,6 +44,13 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'judgeResult':
+            return {
+                ...state,
+                hasResult: action.hasResult
+            };
+
+            break;
         default:
             return state;
     }

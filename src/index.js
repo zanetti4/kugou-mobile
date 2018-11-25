@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import App from './App';
 import reducers from './reducers/reducers';
 import * as serviceWorker from './serviceWorker';
+require('es6-promise').polyfill();
 
 let data = {
     mainPt: 0,
@@ -14,7 +15,8 @@ let data = {
     isShowPlayer: false,
     songName: '',
     titleName: '',
-    isLoading: true
+    isLoading: true,
+    hasResult: true
 };
 
 export let store = createStore(reducers, data);

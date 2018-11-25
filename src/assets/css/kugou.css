@@ -4,7 +4,7 @@ body {
     background-color: white;
     color: #333;
 }
-ul {
+ul, h4 {
     margin: 0;
     padding: 0;
 }
@@ -36,6 +36,11 @@ ul {
 /* 页面主体 */
 .app-main {padding-top: 2rem;}
 .load {text-align: center;}
+.search-result {
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: rgb(245, 245, 245);
+}
 
 /* 歌曲长列表 */
 .songs-row {

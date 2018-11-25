@@ -10,12 +10,12 @@ let instance = axios.create({
             return;
         }
 
+        // console.log(data);
+
         if(typeof data === 'string'){
             //数据是字符串
             data = JSON.parse(data);
         }
-
-        // console.log(data);
 
         let o = {};
 
@@ -41,6 +41,7 @@ let instance = axios.create({
             o.classname = data.classname;
             o.origin = 'singers-list';
         } else if (data.songs) {
+            //歌手信息
             o.data = data.songs.list;
             o.info = data.info;
             o.origin = 'singers-info'

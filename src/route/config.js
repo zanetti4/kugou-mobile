@@ -6,6 +6,7 @@ import PlistInfo from '../views/plist/plist-info/plist-info';
 import Singer from '../views/singer/singer';
 import SingerList from '../views/singer/singer-list/singer-list';
 import SingerInfo from '../views/singer/singer-info/singer-info';
+import Search from '../views/search/search';
 
 export let topNav = [
     {
@@ -36,7 +37,8 @@ export let topNav = [
 
 export let search = {
     path: '/search',
-    title: '搜索'
+    title: '搜索',
+    component: Search
 };
 
 export let second = [

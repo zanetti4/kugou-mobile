@@ -28,7 +28,7 @@ class App extends Component {
     }
 
     render() {
-        let {isPlay} = this.props;
+        let {isPlay, hasResult} = this.props;
 
         return ( 
             <Router>
@@ -36,7 +36,8 @@ class App extends Component {
                     <Head />
                     <div className={classnames({
                         'songsl-lpb': isPlay,
-                        'app-main': true
+                        'app-main': true,
+                        'search-result': !hasResult
                     })} ref={this.main}>
                         <Routes />
                     </div>
@@ -59,7 +60,8 @@ App.propTypes = {
 //从 redux 获取是否需要播放歌曲
 function mapStateToProps(state){
     return {
-        isPlay: state.isPlay
+        isPlay: state.isPlay,
+        hasResult: state.hasResult
     };
 };
 

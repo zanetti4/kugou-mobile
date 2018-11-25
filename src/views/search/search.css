@@ -1,0 +1,20 @@
+.hotl-tit {
+    padding-left: .28rem;
+    border-bottom: solid 1px #CCC;
+    color: #2CA3F5;
+    line-height: 3;
+}
+.search-bar .am-search-cancel {color: #2CA3F5;}
+.search-num {
+    background-color: #E6E6E6;
+    padding-left: .28rem;
+    color: #5D5D5D;
+    font-size: .28rem;
+    line-height: 2;
+}
+.search-no {
+    text-align: center;
+    padding-top: 2rem;
+    line-height: 4;
+}
+.search-no img {width: 60%;}

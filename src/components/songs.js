@@ -90,8 +90,14 @@ class Songs extends Component {
             }
 
             promise.then(({data}) => {
+                if(data.data === undefined){
+                    //原始数据 songs: []
+                    console.log(data);
+                    this.getSongListById(callback, pageIndex);
+                    return;
+                }
+
                 this.curList = data.data;
-                console.log(data.data)
                 this.list.push(...data.data);
                 callback(this.list);
             });
