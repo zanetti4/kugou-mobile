@@ -16,6 +16,8 @@ redux: JavaScript 状态容器，提供可预测化的状态管理。
 react-redux: 将 react 绑定到 redux。
 classnames: 有条件地添加类名。
 js-cookie: 简单、轻量的操作 cookie 的 js 接口。
+fetch-jsonp: 一款跨域数据请求的库文件。
+es6-promise: 一款轻量的库文件，提供了管理异步代码的工具。
 ```
 
 ## 路由设计及功能
