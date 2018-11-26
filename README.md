@@ -18,6 +18,7 @@ classnames: 有条件地添加类名。
 js-cookie: 简单、轻量的操作 cookie 的 js 接口。
 fetch-jsonp: 一款跨域数据请求的库文件。
 es6-promise: 一款轻量的库文件，提供了管理异步代码的工具。
+react-document-title: 在单页面应用中，提供了一个声明式的指定页面标题的方法。
 ```
 
 ## 路由设计及功能
@@ -113,6 +114,15 @@ setState(updater, [callback])
 11. *antd-mobile ListView* 如何处理无限加载？  
 **解决办法：**  
 在使用长列表的组件中发请求获取数据。如果把请求写在父组件中，通过 *setState* 再把数据传给长列表组件，会导致重新渲染。
+12. 如何显示顶部标题？  
+**解决办法：**  
+在相应页面通过 *match* 或者 *location* 进行显示，不要在点击链接跳转时保存数据，因为到达一个视图的方式有很多（点击链接、地址栏输入）。
+13. 如何设置页面标题？  
+**解决办法：**  
+使用 *react-document-title* 组件，引入方法：
+```javascript
+import DocumentTitle from 'react-document-title';
+```
 
 ## 安装
 
