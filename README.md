@@ -123,6 +123,10 @@ setState(updater, [callback])
 ```javascript
 import DocumentTitle from 'react-document-title';
 ```
+---
+**遗留问题：**  
+1. 怎么解决播放音乐时来电的问题？
+2. *getData.js* 用来请求数据，在 *export default* 里使用时，怎么将 *match* 信息写在实参里？
 
 ## 安装
 
