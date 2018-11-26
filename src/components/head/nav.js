@@ -24,8 +24,16 @@ class Nav extends Component {
 
     //判断当前地址是否在顶部导航的路由中
     inTabs = (location, isShowPlayer, songName, titleName) => {
+        let pathName = location.pathname;
+        let len = pathName.length;
+
+        if(pathName[len - 1] === '/' && len !== 1){
+            //当前路径最后一位是/，且不是新歌页，则去掉这个/，因为顶部导航的4个路由路径最后没有/
+            pathName = pathName.slice(0, -1);
+        }
+
         let isInTabs = topNav.some(obj => {
-            return obj.path === location.pathname;
+            return obj.path === pathName;
         });
         
         this.setState({isInTabs}, () => {
@@ -63,9 +71,17 @@ class Nav extends Component {
 
     componentDidMount(){
         let {location, isShowPlayer, songName} = this.props;
-        let titleName = Cookies.get('titleName');
+        let pathName = location.pathname;
 
-        this.inTabs(location, isShowPlayer, songName, titleName);
+        if(pathName === '/search' || pathName === '/search/'){
+            //搜索页
+            this.inTabs(location, isShowPlayer, songName, '搜索');
+        }else{
+            //不是搜索页
+            let titleName = Cookies.get('titleName');
+
+            this.inTabs(location, isShowPlayer, songName, titleName);
+        }
     }
 
     componentWillReceiveProps(nextProps){

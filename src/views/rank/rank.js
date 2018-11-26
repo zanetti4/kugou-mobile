@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { List, WingBlank } from 'antd-mobile';
 import Cookies from 'js-cookie';
+import DocumentTitle from 'react-document-title';
 import {getData} from '../../server/getData';
 import {isView} from '../../assets/js/myFn';
 import './rank.css';
@@ -82,12 +83,26 @@ class Rank extends Component {
             >{rankname}</Item>;
         });
 
+        let {isPlay, pageTitlePlay} = this.props;
+        const defaultTitle = '排行 - 酷狗移动版';
+        let title = isPlay ? pageTitlePlay : defaultTitle;
+
         return ( 
-            <WingBlank size="sm">
-                <List className="rank">{html}</List>
-            </WingBlank>
+            <DocumentTitle title={title}>
+                <WingBlank size="sm">
+                    <List className="rank">{html}</List>
+                </WingBlank>
+            </DocumentTitle>
         );
     }
 }
 
-export default connect()(getData('getRankList')(Rank));
+//从 redux 获取数据
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
+    };
+};
+
+export default connect(mapStateToProps)(getData('getRankList')(Rank));

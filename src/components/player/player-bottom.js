@@ -37,7 +37,7 @@ class PlayerBottom extends Component {
     }
 
     //通过 hash 发请求，获取歌曲信息
-    getSongInfoByHash = (hash, songs, isShowPlayer = false) => {
+    getSongInfoByHash = (hash, songs) => {
         let index = songs.findIndex(song => song.hash === hash);
 
         if(hash){
@@ -53,6 +53,11 @@ class PlayerBottom extends Component {
                     this.dealSongName();
 
                     let {fileName, timeLength} = this.state.songInfo;
+                    let {saveTitlePlay} = this.props;
+                    let pageTitle = `${fileName} - 酷狗移动版`;
+
+                    document.title = pageTitle;
+                    saveTitlePlay(pageTitle);
 
                     getLyric({
                         hash,
@@ -64,19 +69,6 @@ class PlayerBottom extends Component {
                 });
             });
         }
-
-        /* if(isShowPlayer){
-            //显示大播放器
-            let {fileName, timeLength} = this.state.songInfo;
-
-            getLyric({
-                hash,
-                keyword: fileName,
-                timelength: timeLength*1000
-            }).then(({data}) => {
-                this.setState({lyric: data});
-            });
-        } */
     }
 
     //暂停、播放
@@ -100,7 +92,7 @@ class PlayerBottom extends Component {
 
         let nextIndex = -1;
         let {index} = this.state;
-        let {songList, isShowPlayer} = this.props;
+        let {songList} = this.props;
 
         if(index === songList.length - 1){
             //当前播放的是最后一首
@@ -112,7 +104,7 @@ class PlayerBottom extends Component {
 
         let nextHash = songList[nextIndex].hash;
 
-        this.getSongInfoByHash(nextHash, songList, isShowPlayer);
+        this.getSongInfoByHash(nextHash, songList);
     }
 
     //上一首
@@ -121,7 +113,7 @@ class PlayerBottom extends Component {
 
         let prevIndex = -1;
         let {index} = this.state;
-        let {songList, isShowPlayer} = this.props;
+        let {songList} = this.props;
 
         if(index === 0){
             //当前播放的是第一首
@@ -133,7 +125,7 @@ class PlayerBottom extends Component {
 
         let prevHash = songList[prevIndex].hash;
 
-        this.getSongInfoByHash(prevHash, songList, isShowPlayer);
+        this.getSongInfoByHash(prevHash, songList);
     }
 
     //获取歌曲当前时间
@@ -159,9 +151,9 @@ class PlayerBottom extends Component {
 
     componentWillReceiveProps(nextProps){
         //点击另一首歌时，执行这里
-        let {hash, isShowPlayer, songList} = nextProps;
+        let {hash, songList} = nextProps;
 
-        this.getSongInfoByHash(hash, songList, isShowPlayer);
+        this.getSongInfoByHash(hash, songList);
     }
 
     render() {
@@ -273,6 +265,13 @@ function mapDispatchToProps(dispatch){
                 isPlay,
                 hash: '',
                 songList
+            });
+        },
+        //保存播放歌曲时的页面标题
+        saveTitlePlay(pageTitlePlay){
+            dispatch({
+                type: 'saveTitlePlay',
+                pageTitlePlay
             });
         }
     };

@@ -51,6 +51,13 @@ export default function(state = {}, action){
             };
 
             break;
+        case 'saveTitlePlay':
+            return {
+                ...state,
+                pageTitlePlay: action.pageTitlePlay
+            };
+
+            break;
         default:
             return state;
     }

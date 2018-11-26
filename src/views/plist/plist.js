@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { ListView, WingBlank, Flex, Icon } from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
+import DocumentTitle from 'react-document-title';
+import {connect} from 'react-redux';
 import {getPlist} from '../../server/api';
 import {isView} from '../../assets/js/myFn';
 import './plist.css';
@@ -160,10 +162,24 @@ class Plist extends Component {
     }
 
     render(){
-        return <WingBlank size="sm">
-            {this.renderList()}
-        </WingBlank>;
+        let {isPlay, pageTitlePlay} = this.props;
+        const defaultTitle = '歌单 - 酷狗移动版';
+        let title = isPlay ? pageTitlePlay : defaultTitle;
+
+        return <DocumentTitle title={title}>
+            <WingBlank size="sm">
+                {this.renderList()}
+            </WingBlank>
+        </DocumentTitle>;
     }
 }
 
-export default withRouter(Plist);
+//从 redux 获取数据
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(Plist));

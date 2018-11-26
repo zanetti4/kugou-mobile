@@ -16,7 +16,8 @@ let data = {
     songName: '',
     titleName: '',
     isLoading: true,
-    hasResult: true
+    hasResult: true,
+    pageTitlePlay: ''
 };
 
 export let store = createStore(reducers, data);

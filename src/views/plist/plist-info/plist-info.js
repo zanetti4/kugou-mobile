@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Cookies from 'js-cookie';
 import { Icon } from 'antd-mobile';
+import DocumentTitle from 'react-document-title';
 import Intro from '../../../components/intro';
 import Songs from '../../../components/songs';
 import {getPlistInfo} from '../../../server/api';
@@ -69,16 +70,22 @@ class PlistInfo extends Component {
             <Intro intro={intro} />
             <Songs />
         </React.Fragment>;
+        let show = isLoading ? loading : html;
+        let {isPlay, pageTitlePlay} = this.props;
+        let defaultTitle = `${name} - 酷狗移动版`;
+        let title = isPlay ? pageTitlePlay : defaultTitle;
 
-        return isLoading ? loading : html;
+        return <DocumentTitle title={title}>{show}</DocumentTitle>;
     }
 }
 
-//从 redux 获取 loading 状态、页面主体的上内边距
+//从 redux 获取 loading 状态、页面主体的上内边距、是否显示底部播放器、播放音乐时的页面标题
 function mapStateToProps(state){
     return {
         isLoading: state.isLoading,
-        mainPt: state.mainPt
+        mainPt: state.mainPt,
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
     };
 };
 

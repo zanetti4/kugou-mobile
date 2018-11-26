@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { ListView, WingBlank, Flex, Icon } from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
 import Cookies from 'js-cookie';
+import DocumentTitle from 'react-document-title';
 import {getSingerList} from '../../../server/api';
 import {isView} from '../../../assets/js/myFn';
 import './singer-list.css';
@@ -32,6 +33,7 @@ class SingerList extends Component {
         };
 
         this.total = null;
+        this.listClass = '';
     }
 
     componentWillMount(){
@@ -102,6 +104,7 @@ class SingerList extends Component {
                 this.total = data.total;
                 this.curList = data.data;
                 this.list.push(...data.data);
+                this.listClass = data.classname;
 
                 dispatch({
                     type: 'saveTitleName',
@@ -174,10 +177,24 @@ class SingerList extends Component {
     }
 
     render(){
-        return <WingBlank size="sm">
-            {this.renderList()}
-        </WingBlank>;
+        let {isPlay, pageTitlePlay} = this.props;
+        let defaultTitle = `${this.listClass} - 酷狗移动版`;
+        let title = isPlay ? pageTitlePlay : defaultTitle;
+
+        return <DocumentTitle title={title}>
+            <WingBlank size="sm">
+                {this.renderList()}
+            </WingBlank>
+        </DocumentTitle>;
     }
 }
 
-export default connect()(withRouter(SingerList));
+//从 redux 获取数据
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(SingerList));

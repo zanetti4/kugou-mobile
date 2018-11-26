@@ -6,11 +6,13 @@ const Item = List.Item;
 
 class HotList extends Component {
     render() {
-        let {list} = this.props;
-        console.log(list);
+        let {list, searchHot} = this.props;
+        // console.log(list);
 
         let items = list.map((hotWord, index) => {
-            return <Item key={index} onClick={() => {}}>{hotWord.keyword}</Item>;
+            return <Item key={index} onClick={() => {
+                searchHot(hotWord.keyword);
+            }}>{hotWord.keyword}</Item>;
         });
 
         return (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fetchJsonp from 'fetch-jsonp';
 import {connect} from 'react-redux';
+import DocumentTitle from 'react-document-title';
 import HotList from './hot-list';
 import { SearchBar, ListView, WingBlank, Icon } from 'antd-mobile';
 import './search.css';
@@ -17,12 +18,12 @@ class Search extends Component {
 
         this.state = {
             hotWords: [],
-            value: '',
+            value: '', //文本框的值
             isShowHot: true,
             total: 0,
             dataSource,
             isLoading: true,
-            keyword: ''
+            keyword: '' //用于搜索的关键词
         };
 
         //存放歌曲
@@ -84,6 +85,20 @@ class Search extends Component {
         this.getResult(this.changeState, 1, txt);
     }
 
+    //热词搜索
+    searchHot = (keyword) => {
+        let txt = encodeURIComponent(keyword);
+
+        this.setState({
+            isShowHot: false,
+            keyword: txt,
+            value: keyword
+        });
+
+        this.props.changeLoading(true);
+        this.getResult(this.changeState, 1, txt);
+    }
+
     //获取搜索数据
     getResult = (callback, pageIndex, txt) => {
         let that = this;
@@ -135,12 +150,21 @@ class Search extends Component {
         this.getResult(this.changeState, ++pageIndex, this.state.keyword);
     }
 
+    //播放歌曲
+    playSong = (hash) => {
+        let {play, isPlay} = this.props;
+
+        play(isPlay, this.list, hash);
+    }
+
     //渲染列表
     renderList(){
         //一行的结构
         const row = (dataRow, sectionID, rowID) => {
             return (
-                <div className="songs-lv-row">{dataRow.filename}</div>
+                <div className="songs-lv-row" onClick={() => {
+                    this.playSong(dataRow.hash);
+                }}>{dataRow.filename}</div>
             );
         };
 
@@ -183,29 +207,36 @@ class Search extends Component {
                 {this.renderList()}
             </WingBlank>
         </React.Fragment> : noResult;
-        let hotList = isShowHot ? <HotList list={hotWords} /> : result;
+        let hotList = isShowHot ? <HotList list={hotWords} searchHot={this.searchHot} /> : result;
         let content = isLoading ? loading : hotList;
+        let {isPlay, pageTitlePlay} = this.props;
+        const defaultTitle = '搜索 - 酷狗移动版';
+        let title = isPlay ? pageTitlePlay : defaultTitle;
 
         return (
-            <React.Fragment>
-                <SearchBar 
-                    className="search-bar"
-                    placeholder="歌手/歌名/拼音"
-                    value={value}
-                    onChange={this.onChange}
-                    onSubmit={this.onSubmit}
-                />
-                {content}
-            </React.Fragment>
+            <DocumentTitle title={title}>
+                <React.Fragment>
+                    <SearchBar 
+                        className="search-bar"
+                        placeholder="歌手/歌名/拼音"
+                        value={value}
+                        onChange={this.onChange}
+                        onSubmit={this.onSubmit}
+                    />
+                    {content}
+                </React.Fragment>
+            </DocumentTitle>
         );
     }
 }
 
-//从 redux 获取 loading 状态、页面主体的上内边距
+//从 redux 获取 loading 状态、页面主体的上内边距、是否显示底部播放器、播放音乐时的页面标题
 function mapStateToProps(state){
     return {
         isLoading: state.isLoading,
-        mainPt: state.mainPt
+        mainPt: state.mainPt,
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
     };
 };
 
@@ -224,6 +255,15 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: 'judgeResult',
                 hasResult
+            });
+        },
+        //播放歌曲
+        play(isPlay, list, hash){
+            dispatch({
+                type: 'play',
+                isPlay: ++isPlay,
+                songList: list,
+                hash
             });
         }
     };

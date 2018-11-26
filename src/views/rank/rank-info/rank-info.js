@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Icon } from 'antd-mobile';
 import Cookies from 'js-cookie';
+import DocumentTitle from 'react-document-title';
 import RankBanner from './rank-banner';
 import Songs from '../../../components/songs';
 import {getRankInfo, cancelRequest} from '../../../server/api';
@@ -26,7 +27,7 @@ class RankInfo extends Component {
             changeLoading(true);
 
             getRankInfo(rankId).then(({data}) => {
-                console.log(data);
+                // console.log(data);
 
                 let {banner7url, rankname} = data.info;
                 let banner = banner7url.replace('{size}', 400);
@@ -63,16 +64,22 @@ class RankInfo extends Component {
             <RankBanner banner={banner} name={name} />
             <Songs />
         </React.Fragment>;
+        let show = isLoading ? loading : html;
+        let {isPlay, pageTitlePlay} = this.props;
+        let defaultTitle = `${name} - 酷狗移动版`;
+        let title = isPlay ? pageTitlePlay : defaultTitle;
 
-        return isLoading ? loading : html;
+        return <DocumentTitle title={title}>{show}</DocumentTitle>;
     }
 }
 
-//从 redux 获取 loading 状态、页面主体的上内边距
+//从 redux 获取 loading 状态、页面主体的上内边距、是否显示底部播放器、播放音乐时的页面标题
 function mapStateToProps(state){
     return {
         isLoading: state.isLoading,
-        mainPt: state.mainPt
+        mainPt: state.mainPt,
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
     };
 };
 

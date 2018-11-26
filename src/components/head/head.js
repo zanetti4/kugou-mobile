@@ -11,8 +11,15 @@ class Head extends Component {
         let initPage = 0;
         let indexPage = -1;
         //如果当前在除了新歌的顶部一级路由，刷新页面后依然停留在这儿。
+        let pathName = location.pathname;
+        let len = pathName.length;
+
+        if(pathName[len - 1] === '/' && len !== 1){
+            //当前路径最后一位是/，且不是新歌页，则去掉这个/，因为顶部导航的4个路由路径最后没有/
+            pathName = pathName.slice(0, -1);
+        }
         let index = topNav.findIndex(obj => {
-            return obj.path === location.pathname;
+            return obj.path === pathName;
         });
 
         if(index !== -1){

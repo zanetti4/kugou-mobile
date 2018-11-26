@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { List, WingBlank } from 'antd-mobile';
+import DocumentTitle from 'react-document-title';
+import {connect} from 'react-redux';
 import {getData} from '../../server/getData';
 import './singer.css';
 
@@ -78,15 +80,29 @@ class Singer extends Component {
             }
         });
 
+        let {isPlay, pageTitlePlay} = this.props;
+        const defaultTitle = '歌手 - 酷狗移动版';
+        let title = isPlay ? pageTitlePlay : defaultTitle;
+
         return ( 
-            <WingBlank size="md">
-                <List className="singer-hot">{list1}</List>
-                <List className="singer-hot">{list2}</List>
-                <List className="singer-hot">{list3}</List>
-                <List className="singer-hot">{list4}</List>
-            </WingBlank>
+            <DocumentTitle title={title}>
+                <WingBlank size="md">
+                    <List className="singer-hot">{list1}</List>
+                    <List className="singer-hot">{list2}</List>
+                    <List className="singer-hot">{list3}</List>
+                    <List className="singer-hot">{list4}</List>
+                </WingBlank>
+            </DocumentTitle>
         );
     }
 }
 
-export default getData('getSingers')(Singer);
+//从 redux 获取数据
+function mapStateToProps(state){
+    return {
+        isPlay: state.isPlay,
+        pageTitlePlay: state.pageTitlePlay
+    };
+};
+
+export default connect(mapStateToProps)(getData('getSingers')(Singer));
