@@ -1,0 +1,99 @@
+卷 DATA 的文件夹 PATH 列表
+卷序列号为 1C71-D987
+D:.
+│  App.js
+│  index.js
+│  serviceWorker.js
+│  setupProxy.js
+│  tree.txt
+│  
+├─assets
+│  ├─css
+│  │      kugou.css
+│  │      
+│  ├─iconfont
+│  │      iconfont.eot
+│  │      iconfont.svg
+│  │      iconfont.ttf
+│  │      iconfont.woff
+│  │      
+│  ├─images
+│  │      search-empty.png
+│  │      top-logo.png
+│  │      
+│  └─js
+│          myFn.js
+│          
+├─components
+│  │  back-top.js
+│  │  intro.js
+│  │  songs-list.js
+│  │  songs.js
+│  │  
+│  ├─head
+│  │      head.css
+│  │      head.js
+│  │      nav.js
+│  │      top.js
+│  │      
+│  └─player
+│      │  player-bottom.css
+│      │  player-bottom.js
+│      │  
+│      └─bigPlayer
+│              big-player.css
+│              big-player.js
+│              controller.js
+│              lyric.js
+│              
+├─reducers
+│      reducers.js
+│      
+├─route
+│      config.js
+│      routes.js
+│      
+├─server
+│      api.js
+│      getData.js
+│      
+└─views
+    ├─new-song
+    │      carousel.js
+    │      new-song.css
+    │      new-song.js
+    │      
+    ├─plist
+    │  │  plist.css
+    │  │  plist.js
+    │  │  
+    │  └─plist-info
+    │          plist-info-getData.js
+    │          plist-info.css
+    │          plist-info.js
+    │          
+    ├─rank
+    │  │  rank.css
+    │  │  rank.js
+    │  │  
+    │  └─rank-info
+    │          rank-banner.js
+    │          rank-info.css
+    │          rank-info.js
+    │          
+    ├─search
+    │      hot-list.js
+    │      search.css
+    │      search.js
+    │      
+    └─singer
+        │  singer.css
+        │  singer.js
+        │  
+        ├─singer-info
+        │      singer-info.js
+        │      
+        └─singer-list
+                singer-list.css
+                singer-list.js
+                
