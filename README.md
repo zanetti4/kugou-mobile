@@ -35,7 +35,107 @@ react-document-title: 在单页面应用中，提供了一个声明式的指定�
 - 在4个顶部导航对应的一级路由页面，可以点击顶部导航进行选项卡切换。
 - 在二级路由页面、搜索页和显示大播放器时，顶部导航变为类别名、歌手名或歌名，还有后退按钮，底色为白色。
 
+## 项目结构
+``` bash
+│  App.js // 组件总入口
+│  index.js // 项目的总入口
+│  serviceWorker.js // Web离线应用解决方案
+│  setupProxy.js // 设置代理、解决跨域
+│  tree.txt // 项目结构
+│  
+├─assets // 静态文件
+│  ├─css // 样式文件
+│  │      kugou.css // 通用样式
+│  │      
+│  ├─iconfont // 图标
+│  │      iconfont.eot
+│  │      iconfont.svg
+│  │      iconfont.ttf
+│  │      iconfont.woff
+│  │      
+│  ├─images // 图片
+│  │      search-empty.png
+│  │      top-logo.png
+│  │      
+│  └─js // js 文件
+│          myFn.js // 封装的通用方法
+│          
+├─components // 通用组件
+│  │  back-top.js // 回顶部
+│  │  intro.js // 可展开收起的介绍
+│  │  songs-list.js // 歌曲短列表
+│  │  songs.js // // 歌曲长列表
+│  │  
+│  ├─head // 页头
+│  │      head.css
+│  │      head.js // 页头
+│  │      nav.js // 导航或标题
+│  │      top.js // 标志和搜索按钮
+│  │      
+│  └─player // 播放器
+│      │  player-bottom.css
+│      │  player-bottom.js // 底部播放器
+│      │  
+│      └─bigPlayer // 大播放器
+│              big-player.css
+│              big-player.js // 大播放器
+│              controller.js // 控制器
+│              lyric.js // 歌词
+│              
+├─reducers // redux
+│      reducers.js
+│      
+├─route // 路由信息
+│      config.js // 路由配置
+│      routes.js // 切换路由
+│      
+├─server // 发送请求
+│      api.js // 封装发送请求的函数
+│      getData.js // 发送请求返回组件
+│      
+└─views // 视图
+    ├─new-song // 新歌（首页）
+    │      carousel.js // 焦点图
+    │      new-song.css
+    │      new-song.js // 新歌（首页）
+    │      
+    ├─plist // 歌单
+    │  │  plist.css
+    │  │  plist.js
+    │  │  
+    │  └─plist-info // 歌单信息
+    │          plist-info-getData.js // 使用 getData 获取数据（尚未解决）
+    │          plist-info.css
+    │          plist-info.js // 歌单信息
+    │          
+    ├─rank // 排行
+    │  │  rank.css
+    │  │  rank.js
+    │  │  
+    │  └─rank-info // 榜单信息
+    │          rank-banner.js // 大图
+    │          rank-info.css
+    │          rank-info.js // 榜单信息
+    │          
+    ├─search // 搜索
+    │      hot-list.js // 热词列表
+    │      search.css
+    │      search.js // 搜索
+    │      
+    └─singer // 歌手
+        │  singer.css
+        │  singer.js
+        │  
+        ├─singer-info // 歌手信息
+        │      singer-info.js
+        │      
+        └─singer-list // 歌手列表
+                singer-list.css
+                singer-list.js
+```
+
 ## 心得体会&技术难点
+> 这是我的第一个 *react* 项目，也是第一次专门做移动端网页，以前只是做响应式页面。有了之前 *vue* 项目的经验，这次稍微容易一点儿，用时也短了一些。个人感觉 react 比 vue 更好掌握，内容少一点儿，没有导航守卫，而且数据是单向传递的。至于 UI 组件库，与之前用到的 *iView* 相比，感觉 *antd-mobile* 还存在一些缺陷，比如：官网的说明有的不够详细，缺少一些常用的组件，组件有一些 bug。不过还是给开发带来了很多便利~
 1. 本地图片在页面中不显示。  
 **解决办法：**  
 用 *require* 的方式引入图片。
@@ -123,6 +223,10 @@ setState(updater, [callback])
 ```javascript
 import DocumentTitle from 'react-document-title';
 ```
+---
+**遗留问题：**  
+1. 怎么解决播放音乐时来电的问题？
+2. *getData.js* 用来请求数据，在 *export default* 里使用时，怎么将 *match* 信息写在实参里？
 
 ## 安装
 
