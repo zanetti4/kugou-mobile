@@ -37,6 +37,101 @@ react-document-title: 在单页面应用中，提供了一个声明式的指定�
 
 ## 项目结构
 ``` bash
+│  App.js // 组件总入口
+│  index.js // 项目的总入口
+│  serviceWorker.js // Web离线应用解决方案
+│  setupProxy.js // 设置代理、解决跨域
+│  tree.txt // 项目结构
+│  
+├─assets // 静态文件
+│  ├─css // 样式文件
+│  │      kugou.css // 通用样式
+│  │      
+│  ├─iconfont // 图标
+│  │      iconfont.eot
+│  │      iconfont.svg
+│  │      iconfont.ttf
+│  │      iconfont.woff
+│  │      
+│  ├─images // 图片
+│  │      search-empty.png
+│  │      top-logo.png
+│  │      
+│  └─js // js 文件
+│          myFn.js // 封装的通用方法
+│          
+├─components // 通用组件
+│  │  back-top.js // 回顶部
+│  │  intro.js // 可展开收起的介绍
+│  │  songs-list.js // 歌曲短列表
+│  │  songs.js // // 歌曲长列表
+│  │  
+│  ├─head // 页头
+│  │      head.css
+│  │      head.js // 页头
+│  │      nav.js // 导航或标题
+│  │      top.js // 标志和搜索按钮
+│  │      
+│  └─player // 播放器
+│      │  player-bottom.css
+│      │  player-bottom.js // 底部播放器
+│      │  
+│      └─bigPlayer // 大播放器
+│              big-player.css
+│              big-player.js // 大播放器
+│              controller.js // 控制器
+│              lyric.js // 歌词
+│              
+├─reducers // redux
+│      reducers.js
+│      
+├─route // 路由信息
+│      config.js // 路由配置
+│      routes.js // 切换路由
+│      
+├─server // 发送请求
+│      api.js // 封装发送请求的函数
+│      getData.js // 发送请求返回组件
+│      
+└─views // 视图
+    ├─new-song // 新歌（首页）
+    │      carousel.js // 焦点图
+    │      new-song.css
+    │      new-song.js // 新歌（首页）
+    │      
+    ├─plist // 歌单
+    │  │  plist.css
+    │  │  plist.js
+    │  │  
+    │  └─plist-info // 歌单信息
+    │          plist-info-getData.js // 使用 getData 获取数据（尚未解决）
+    │          plist-info.css
+    │          plist-info.js // 歌单信息
+    │          
+    ├─rank // 排行
+    │  │  rank.css
+    │  │  rank.js
+    │  │  
+    │  └─rank-info // 榜单信息
+    │          rank-banner.js // 大图
+    │          rank-info.css
+    │          rank-info.js // 榜单信息
+    │          
+    ├─search // 搜索
+    │      hot-list.js // 热词列表
+    │      search.css
+    │      search.js // 搜索
+    │      
+    └─singer // 歌手
+        │  singer.css
+        │  singer.js
+        │  
+        ├─singer-info // 歌手信息
+        │      singer-info.js
+        │      
+        └─singer-list // 歌手列表
+                singer-list.css
+                singer-list.js
 ```
 
 ## 心得体会&技术难点
