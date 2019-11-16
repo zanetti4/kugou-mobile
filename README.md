@@ -223,6 +223,27 @@ setState(updater, [callback])
 ```javascript
 import DocumentTitle from 'react-document-title';
 ```
+14. 使用 *combineReducers* 后，*redux* 中的初始数据和 *mapStateToProps* 的参数 *state* 格式变成了什么样？  
+**解决办法：**  
+格式都变成与 *combineReducers* 参数一样的格式。
+```javascript
+{
+  play: {
+    isPlay: 0,
+    hash: '',
+    songList: [],
+  },
+  others: {
+    mainPt: 0,
+    isShowPlayer: false,
+    songName: '',
+    titleName: '',
+    isLoading: true,
+    hasResult: true,
+    pageTitlePlay: ''
+  }
+}
+```
 ---
 **遗留问题：**  
 1. 怎么解决播放音乐时来电的问题？
