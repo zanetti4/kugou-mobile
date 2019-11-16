@@ -5,35 +5,35 @@ import PropTypes from 'prop-types';
 const Item = List.Item;
 
 class HotList extends Component {
-    render() {
-        let {list, searchHot} = this.props;
-        // console.log(list);
+  render() {
+    let { list, searchHot } = this.props;
+    // console.log(list);
 
-        let items = list.map((hotWord, index) => {
-            return <Item key={index} onClick={() => {
-                searchHot(hotWord.keyword);
-            }}>{hotWord.keyword}</Item>;
-        });
+    let items = list.map((hotWord, index) => {
+      return <Item key={index} onClick={() => {
+        searchHot(hotWord.keyword);
+      }}>{hotWord.keyword}</Item>;
+    });
 
-        return (
-            <React.Fragment>
-                <h4 className="hotl-tit">最近热门</h4>
-                <WingBlank size="sm">
-                    <List className="songsl-list">
-                        {items}
-                    </List>
-                </WingBlank>
-            </React.Fragment>
-        );
-    }
+    return (
+      <React.Fragment>
+        <h4 className="hotl-tit">最近热门</h4>
+        <WingBlank size="sm">
+          <List className="songsl-list">
+            {items}
+          </List>
+        </WingBlank>
+      </React.Fragment>
+    );
+  }
 }
 
 HotList.defaultProps = {
-    list: []
+  list: []
 }
 
 HotList.propTypes = {
-    list: PropTypes.array
+  list: PropTypes.array
 }
 
 export default HotList;

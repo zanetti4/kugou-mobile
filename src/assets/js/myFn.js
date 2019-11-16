@@ -21,11 +21,11 @@ export const convertSecond = (seconds) => {
     return `${addZero(minute)}:${addZero(second)}`;
 };
 
-var mo=function(e){e.preventDefault()};
+var mo = function(e){e.preventDefault()};
 //禁止页面滚动
 export const stop = () => {
     document.body.style.overflow='hidden';
-    document.addEventListener("touchmove",mo, {passive: false});//禁止页面滑动
+    document.addEventListener("touchmove",mo, {passive: false});
 };
 
 //取消禁止页面滚动
