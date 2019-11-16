@@ -1,55 +1,69 @@
-export default function others(state = {}, action){
-    switch(action.type){
-        case 'updateMainPt':
-            return {
-                ...state,
-                mainPt: action.mainPt
-            };
+export default function others(state = {}, action) {
+  switch (action.type) {
+    case 'updateMainPt':
+      return {
+        ...state,
+        others: {
+          mainPt: action.mainPt
+        }
+      };
 
-            break;
-        case 'showPlayer':
-            return {
-                ...state,
-                isShowPlayer: action.isShowPlayer
-            };
+      break;
+    case 'showPlayer':
+      return {
+        ...state,
+        others: {
+          isShowPlayer: action.isShowPlayer
+        }
+      };
 
-            break;
-        case 'saveSongName':
-            return {
-                ...state,
-                songName: action.songName
-            };
+      break;
+    case 'saveSongName':
+      return {
+        ...state,
+        others: {
+          songName: action.songName
+        }
+      };
 
-            break;
-        case 'saveTitleName':
-            return {
-                ...state,
-                titleName: action.titleName
-            };
+      break;
+    case 'saveTitleName':
+      return {
+        ...state,
+        others: {
+          titleName: action.titleName
+        }
+      };
 
-            break;
-        case 'changeLoading':
-            return {
-                ...state,
-                isLoading: action.isLoading
-            };
+      break;
+    case 'changeLoading':
+      return {
+        ...state,
+        others: {
+          isLoading: action.isLoading
+        }
+      };
 
-            break;
-        case 'judgeResult':
-            return {
-                ...state,
-                hasResult: action.hasResult
-            };
+      break;
+    case 'judgeResult':
+      return {
+        ...state,
+        others: {
+          hasResult: action.hasResult
+        }
+      };
 
-            break;
-        case 'saveTitlePlay':
-            return {
-                ...state,
-                pageTitlePlay: action.pageTitlePlay
-            };
+      break;
+    case 'saveTitlePlay':
+      return {
+        ...state,
+        others: {
+          pageTitlePlay: action.pageTitlePlay
+        }
+      };
 
-            break;
-        default:
-            return state;
-    }
+      break;
+    default:
+      return state;
+  }
 };
