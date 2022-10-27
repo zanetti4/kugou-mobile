@@ -17,7 +17,8 @@ let data = {
     titleName: '',
     isLoading: true,
     hasResult: true,
-    pageTitlePlay: ''
+    pageTitlePlay: '',
+    // navHeight: 0,
 };
 
 export let store = createStore(reducers, data);

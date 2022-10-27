@@ -27,8 +27,10 @@ class SingerInfo extends Component {
       //singerId 不是空字符串
       changeLoading(true);
 
-      getSingerInfo({ singerId }).then(({ data }) => {
-        // console.log(data);
+      getSingerInfo({ 
+        singerId,
+        page: 1,
+      }).then(({ data }) => {
         let { imgurl, singername, intro } = data.info;
         let banner = imgurl.replace('{size}', 400);
 

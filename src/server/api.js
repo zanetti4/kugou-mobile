@@ -38,7 +38,7 @@ let instance = axios.create({
             //歌手列表
             o.data = data.singers.list.info;
             o.total = data.singers.total;
-            o.classname = data.classname;
+            o.classname = '歌手列表';
             o.origin = 'singers-list';
         } else if (data.songs) {
             //歌手信息

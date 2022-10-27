@@ -82,12 +82,32 @@ class Nav extends Component {
 
             this.inTabs(location, isShowPlayer, songName, titleName);
         }
+
+        // this.getHeight();
     }
 
     componentWillReceiveProps(nextProps){
         let {location, isShowPlayer, songName, titleName} = nextProps;
 
         this.inTabs(location, isShowPlayer, songName, titleName);
+    }
+
+    /* componentDidUpdate(prevProps){
+      const {isShowPlayer, isInTabs} = this.props;
+
+      if(isShowPlayer !== prevProps.isShowPlayer || isInTabs !== prevProps.isInTabs){
+        //是否显示播放器或者是否属于顶部标签改变
+        if(isShowPlayer && !isInTabs){
+          //显示顶部导航
+          this.getHeight();
+        }
+      }
+    } */
+
+    getHeight = () => {
+      const {updateNavHeight} = this.props;
+
+      updateNavHeight(document.querySelector('.nav-title').offsetHeight);
     }
 
     render() {
@@ -148,7 +168,14 @@ function mapDispatchToProps(dispatch){
                 type: 'showPlayer',
                 isShowPlayer: false
             });
-        }
+        },
+        //更新顶部的高度
+        updateNavHeight(navHeight) {
+          dispatch({
+            type: 'updateNavHeight',
+            navHeight
+          });
+        },
     };
 };
 

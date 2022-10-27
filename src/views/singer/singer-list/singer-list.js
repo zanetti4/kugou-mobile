@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, WingBlank, Flex, Icon } from 'antd-mobile';
+import { ListView, WingBlank, Flex, Icon, Menu } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import DocumentTitle from 'react-document-title';
@@ -20,7 +20,8 @@ class SingerList extends Component {
 
     this.state = {
       dataSource,
-      isLoading: true
+      isLoading: true,
+      dataList: [],
     };
 
     //存放歌手
@@ -44,7 +45,7 @@ class SingerList extends Component {
 
   componentDidMount() {
     pageIndex = 1;
-    this.getSingerListData(this.changeState);
+    this.getSingerListData(this.changeState, pageIndex);
   }
 
   componentWillUnmount() {
@@ -78,11 +79,17 @@ class SingerList extends Component {
   //修改 state
   changeState = (list) => {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(list),
+      dataList: list,
       isLoading: false
     }, () => {
       this.imgsUrl = this.curList.map(singer => {
-        return singer.imgurl.replace('{size}', 400);
+        if(singer.imgurl){
+          //有图片
+          return singer.imgurl.replace('{size}', 400);
+        }else{
+          //没有图片
+          return '';
+        }
       });
 
       this.lazy(this.imgsUrl);
@@ -100,10 +107,25 @@ class SingerList extends Component {
         classid,
         page: pageIndex
       }).then(({ data }) => {
-        // console.log(data);
         this.total = data.total;
         this.curList = data.data;
-        this.list.push(...data.data);
+
+        const menuData = data.data.map(category => {
+          const children = category.singer.map(singer => {
+            return {
+              label: singer.singername,
+              value: singer.singerid + '',
+            }
+          });
+
+          return {
+            label: category.title,
+            value: category.title,
+            children,
+          }
+        });
+
+        this.list.push(...menuData);
         this.listClass = data.classname;
 
         dispatch({
@@ -133,6 +155,11 @@ class SingerList extends Component {
     this.props.history.push(`/singer/info/${singerId}`);
   }
 
+  //选择歌手后的回调函数
+  onChange = item => {
+    this.toSingerInfo(item[1]);
+  }
+
   //渲染列表
   renderList() {
     //一行的结构
@@ -152,7 +179,8 @@ class SingerList extends Component {
       );
     };
 
-    let { isLoading, dataSource } = this.state;
+    let { isLoading, dataSource, dataList } = this.state;
+    // const { navHeight } = this.props;
     //长列表页脚
     let foot = () => {
       return isLoading ? '加载中……' : '木有了……';
@@ -161,17 +189,12 @@ class SingerList extends Component {
     let hasInfiniteLoad = this.total ? null : this.onEndReached;
 
     return (
-      <ListView
-        className="singerl"
-        dataSource={dataSource} // 渲染的数据源
-        renderFooter={foot}
-        renderRow={row} // 单条数据
-        pageSize={4} // 每次渲染的行数
-        useBodyScroll
-        scrollRenderAheadDistance={500} // 当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行
-        scrollEventThrottle={20} // 控制在滚动过程中，scroll事件被调用的频率
-        onEndReachedThreshold={10} // 调用onEndReached之前的临界值，单位是像素
-        onEndReached={hasInfiniteLoad} // 上拉加载事件
+      <Menu
+        className="siger-menu"
+        data={dataList}
+        value={[]}
+        // onChange={this.onChange}
+        height={document.documentElement.clientHeight - 45 - 55}
       />
     );
   }
@@ -193,7 +216,8 @@ class SingerList extends Component {
 function mapStateToProps(state) {
   return {
     isPlay: state.isPlay,
-    pageTitlePlay: state.pageTitlePlay
+    pageTitlePlay: state.pageTitlePlay,
+    // navHeight: state.navHeight,
   };
 };
 

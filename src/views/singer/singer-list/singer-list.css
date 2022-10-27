@@ -27,3 +27,7 @@ html:not([data-scale]) .singerl .am-list-body::before, html:not([data-scale]) .s
     line-height: 2.5;
     font-size: .32rem;
 }
+.siger-menu .am-list-body {
+  overflow-y: auto;
+  height: 640px;
+}

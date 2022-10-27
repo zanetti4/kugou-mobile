@@ -7,6 +7,13 @@ export default function(state = {}, action){
             };
 
             break;
+        /* case 'updateNavHeight':
+            return {
+                ...state,
+                navHeight: action.navHeight
+            };
+
+            break; */
         case 'play':
             return {
                 ...state,
