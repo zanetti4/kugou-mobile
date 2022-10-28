@@ -29,5 +29,8 @@ html:not([data-scale]) .singerl .am-list-body::before, html:not([data-scale]) .s
 }
 .siger-menu .am-list-body {
   overflow-y: auto;
-  height: 640px;
+  height: 13rem;
+}
+.siger-menu .am-flexbox .am-flexbox-item {
+  overflow-y: visible;
 }
